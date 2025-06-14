@@ -504,12 +504,15 @@ static void process_cf(struct isotp_recv_ctx *rctx, struct can_frame *frame)
 
 	k_timer_start(&rctx->timer, K_MSEC(ISOTP_CR_TIMEOUT_MS), K_NO_WAIT);
 
-	if ((frame->data[index++] & ISOTP_PCI_SN_MASK) != rctx->sn_expected++) {
-		LOG_ERR("Sequence number mismatch");
-		receive_report_error(rctx, ISOTP_N_WRONG_SN);
-		k_work_submit(&rctx->work);
-		return;
+	if ((frame->data[index] & ISOTP_PCI_SN_MASK) != rctx->sn_expected) {
+	LOG_ERR("Sequence number mismatch");
+	receive_report_error(rctx, ISOTP_N_WRONG_SN);
+	k_work_submit(&rctx->work);
+	return;
 	}
+
+	index++;
+	rctx->sn_expected++;
 
 #ifdef CONFIG_ISOTP_REQUIRE_RX_PADDING
 	/* AUTOSAR requirement SWS_CanTp_00346 */
