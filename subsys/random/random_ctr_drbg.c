@@ -62,7 +62,7 @@ static int ctr_drbg_initialize(void)
 }
 
 
-int z_impl_sys_csrand_get(void *dst, uint32_t outlen)
+int z_impl_sys_csrand_get(void *dst, size_t outlen)
 {
 	int ret;
 
@@ -77,6 +77,10 @@ int z_impl_sys_csrand_get(void *dst, uint32_t outlen)
 	}
 
 	ret = mbedtls_ctr_drbg_random(&ctr_ctx, (unsigned char *)dst, outlen);
+
+	if (ret != 0) {
+		ret = -EIO;
+	}
 
 end:
 	k_mutex_unlock(&ctr_lock);
