@@ -193,8 +193,8 @@ static int pack_variable_int(uint32_t value, struct buf_ctx *buf)
  * @retval 0 if the procedure is successful.
  * @retval -EMSGSIZE if the message is too big for MQTT.
  */
-static uint32_t mqtt_encode_fixed_header(uint8_t message_type, uint8_t *start,
-				      struct buf_ctx *buf)
+static int mqtt_encode_fixed_header(uint8_t message_type, uint8_t *start,
+                                    struct buf_ctx *buf)
 {
 	uint32_t length = buf->cur - start;
 	uint8_t fixed_header_length;

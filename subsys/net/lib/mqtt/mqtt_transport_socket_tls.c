@@ -42,9 +42,9 @@ int mqtt_client_tls_connect(struct mqtt_client *client)
 				       SO_BINDTODEVICE, &ifname,
 				       sizeof(struct ifreq));
 		if (ret < 0) {
-			NET_ERR("Failed to bind ot interface %s error (%d)",
-				ifname.ifr_name, -errno);
-			goto error;
+        NET_ERR("Failed to bind to interface %s error (%d)",
+                ifname.ifr_name, -errno);
+        goto error;
 		}
 
 		NET_DBG("Bound to interface %s", ifname.ifr_name);
@@ -134,8 +134,9 @@ int mqtt_client_tls_connect(struct mqtt_client *client)
 	return 0;
 
 error:
-	(void) zsock_close(client->transport.tls.sock);
-	return -errno;
+        ret = -errno;
+        (void) zsock_close(client->transport.tls.sock);
+        return ret;
 }
 
 int mqtt_client_tls_write(struct mqtt_client *client, const uint8_t *data,
