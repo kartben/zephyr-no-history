@@ -946,7 +946,7 @@ ZTEST(util, test_util_eq)
 
 ZTEST(util, test_util_memeq)
 {
-	uint8_t src1[16];
+        uint8_t src1[16];
 	uint8_t src2[16];
 	uint8_t src3[16];
 
@@ -965,8 +965,20 @@ ZTEST(util, test_util_memeq)
 	mem_area_matching_1 = util_memeq(src1, src2, sizeof(src1));
 	mem_area_matching_2 = util_memeq(src1, src3, sizeof(src1));
 
-	zassert_true(mem_area_matching_1);
-	zassert_false(mem_area_matching_2);
+        zassert_true(mem_area_matching_1);
+        zassert_false(mem_area_matching_2);
+}
+
+ZTEST(util, test_detect_pointer_overflow)
+{
+       zassert_false(Z_DETECT_POINTER_OVERFLOW((const void *)UINTPTR_MAX, 1),
+                     "single byte at max address should be valid");
+       zassert_true(Z_DETECT_POINTER_OVERFLOW((const void *)UINTPTR_MAX, 2),
+                    "two bytes at max address should overflow");
+       zassert_false(Z_DETECT_POINTER_OVERFLOW((const void *)(UINTPTR_MAX - 10), 11),
+                     "exact fit up to max address should be valid");
+       zassert_true(Z_DETECT_POINTER_OVERFLOW((const void *)(UINTPTR_MAX - 10), 12),
+                    "one byte past max address should overflow");
 }
 
 ZTEST_SUITE(util, NULL, NULL, NULL, NULL, NULL);
