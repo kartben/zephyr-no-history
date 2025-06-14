@@ -181,7 +181,7 @@ static inline uint32_t rtc_sam0_datetime_from_tm(const struct rtc_time *timeptr,
 static inline void rtc_sam0_tm_from_datetime(struct rtc_time *timeptr, uint32_t mask,
 					     RTC_MODE2_ALARM_Type calendar)
 {
-	memset(timeptr, 0x00, sizeof(struct rtc_time));
+       memset(timeptr, 0x00, sizeof(*timeptr));
 
 	if (mask & RTC_ALARM_TIME_MASK_SECOND) {
 		timeptr->tm_sec = calendar.bit.SECOND;
