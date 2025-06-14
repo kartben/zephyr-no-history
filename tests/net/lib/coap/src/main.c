@@ -282,7 +282,38 @@ ZTEST(coap, test_parse_simple_pdu)
 	count = coap_find_options(&cpkt, COAP_OPTION_ETAG, options, count);
 
 	zassert_equal(count, 0,
-		      "There shouldn't be any ETAG option in the packet");
+                      "There shouldn't be any ETAG option in the packet");
+}
+
+ZTEST(coap, test_extended_option)
+{
+       uint8_t result_pdu[] = { 0x40, 0x01, 0x12, 0x34,
+                                0xE1, 0x00, 0x1F, 'v' };
+       struct coap_packet cpkt;
+       struct coap_packet parsed;
+       struct coap_option options[1] = {};
+       uint8_t *data = data_buf[0];
+       int r;
+
+       r = coap_packet_init(&cpkt, data, COAP_BUF_SIZE,
+                            COAP_VERSION_1, COAP_TYPE_CON, 0, NULL,
+                            COAP_METHOD_GET, 0x1234);
+       zassert_equal(r, 0, "Could not initialize packet");
+
+       r = coap_packet_append_option(&cpkt, 300, (const uint8_t *)"v", 1);
+       zassert_equal(r, 0, "Could not append extended option");
+
+       zassert_equal(cpkt.offset, sizeof(result_pdu),
+                     "Different size from the reference packet");
+       zassert_mem_equal(result_pdu, cpkt.data, sizeof(result_pdu),
+                         "Built packet doesn't match reference packet");
+
+       r = coap_packet_parse(&parsed, data, cpkt.offset, options, ARRAY_SIZE(options));
+       zassert_equal(r, 0, "Failed to parse packet with extended option");
+       zassert_equal(options[0].delta, 300, "Unexpected option delta");
+       zassert_equal(options[0].len, 1U, "Unexpected option length");
+       zassert_equal(((uint8_t *)options[0].value)[0], 'v',
+                     "Unexpected option value");
 }
 
 ZTEST(coap, test_parse_malformed_pkt)
