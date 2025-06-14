@@ -18,14 +18,14 @@ LOG_MODULE_REGISTER(mctp_uart, CONFIG_MCTP_LOG_LEVEL);
 #define MCTP_UART_FRAMING_FLAG 0x7e
 #define MCTP_UART_ESCAPE       0x7d
 
-const char *UART_EVENT_STRING[] = {
-	"TX Done",     "TX Aborted", "RX Ready", "RX Buffer Request", "RX Buffer Released",
-	"RX Disabled", "RX Stopped",
+static const char * const UART_EVENT_STRING[] = {
+       "TX Done",     "TX Aborted", "RX Ready", "RX Buffer Request", "RX Buffer Released",
+       "RX Disabled", "RX Stopped",
 };
 
-const char *MCTP_STATE_STRING[] = {
-	"Wait: Sync Start", "Wait: Revision", "Wait: Len",  "Data",
-	"Data: Escaped",    "Wait: FCS1",     "Wait: FCS2", "Wait: Sync End",
+static const char * const MCTP_STATE_STRING[] = {
+       "Wait: Sync Start", "Wait: Revision", "Wait: Len",  "Data",
+       "Data: Escaped",    "Wait: FCS1",     "Wait: FCS2", "Wait: Sync End",
 };
 
 struct mctp_serial_header {
@@ -110,9 +110,10 @@ static void mctp_uart_consume(struct mctp_binding_uart *uart, uint8_t c)
 	LOG_DBG("uart consume start state: %d:%s, char 0x%02x", uart->rx_state,
 		MCTP_STATE_STRING[uart->rx_state], c);
 
-	__ASSERT_NO_MSG(!pkt == (uart->rx_state == STATE_WAIT_SYNC_START ||
-				 uart->rx_state == STATE_WAIT_REVISION ||
-				 uart->rx_state == STATE_WAIT_LEN));
+       __ASSERT_NO_MSG((pkt == NULL) ==
+                       (uart->rx_state == STATE_WAIT_SYNC_START ||
+                        uart->rx_state == STATE_WAIT_REVISION ||
+                        uart->rx_state == STATE_WAIT_LEN));
 
 	switch (uart->rx_state) {
 	case STATE_WAIT_SYNC_START:
