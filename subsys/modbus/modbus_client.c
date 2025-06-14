@@ -226,12 +226,12 @@ static int mbc_validate_wr_response(struct modbus_context *ctx,
 	case MODBUS_FC06_HOLDING_REG_WR:
 	case MODBUS_FC15_COILS_WR:
 	case MODBUS_FC16_HOLDING_REGS_WR:
-		if (req_addr != resp_addr || req_value != resp_value) {
-			err = ENXIO;
-		} else {
-			err = 0;
-		}
-		break;
+               if (req_addr != resp_addr || req_value != resp_value) {
+                       err = -ENXIO;
+               } else {
+                       err = 0;
+               }
+               break;
 
 	default:
 		LOG_ERR("Validation not implemented for FC 0x%02x", fc);

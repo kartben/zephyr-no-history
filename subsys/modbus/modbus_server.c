@@ -550,12 +550,15 @@ static bool mbs_fc05_coil_write(struct modbus_context *ctx)
 	coil_addr = sys_get_be16(&ctx->rx_adu.data[0]);
 	coil_val = sys_get_be16(&ctx->rx_adu.data[2]);
 
-	/* See if coil needs to be OFF? */
-	if (coil_val == MODBUS_COIL_OFF_CODE) {
-		coil_state = false;
-	} else {
-		coil_state = true;
-	}
+       /* Validate coil value */
+       if (coil_val == MODBUS_COIL_OFF_CODE) {
+               coil_state = false;
+       } else if (coil_val == MODBUS_COIL_ON_CODE) {
+               coil_state = true;
+       } else {
+               mbs_exception_rsp(ctx, MODBUS_EXC_ILLEGAL_DATA_VAL);
+               return true;
+       }
 
 	err = ctx->mbs_user_cb->coil_wr(coil_addr, coil_state);
 
