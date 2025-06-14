@@ -104,7 +104,7 @@ static void tx(void)
 
 	generic_pkt.ro_pkt = mpsc_pbuf_claim(&buf);
 	pkt = generic_pkt.generic;
-	__ASSERT_NO_MSG(pkt == NULL);
+       __ASSERT_NO_MSG(pkt != NULL);
 
 	size_t len = sizeof(uint32_t) * pkt->hdr.len - pkt->hdr.noff -
 			sizeof(struct log_frontend_uart_pkt_hdr);
