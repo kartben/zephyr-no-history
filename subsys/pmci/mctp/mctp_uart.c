@@ -7,6 +7,7 @@
 
 #include <zephyr/sys/__assert.h>
 #include <zephyr/kernel.h>
+#include <zephyr/sys/util.h>
 #include <zephyr/drivers/uart.h>
 #include <zephyr/pmci/mctp/mctp_uart.h>
 #include <crc-16-ccitt.h>
@@ -18,14 +19,14 @@ LOG_MODULE_REGISTER(mctp_uart, CONFIG_MCTP_LOG_LEVEL);
 #define MCTP_UART_FRAMING_FLAG 0x7e
 #define MCTP_UART_ESCAPE       0x7d
 
-const char *UART_EVENT_STRING[] = {
-	"TX Done",     "TX Aborted", "RX Ready", "RX Buffer Request", "RX Buffer Released",
-	"RX Disabled", "RX Stopped",
+static const char *const UART_EVENT_STRING[] = {
+       "TX Done",     "TX Aborted", "RX Ready", "RX Buffer Request",
+       "RX Buffer Released", "RX Disabled", "RX Stopped",
 };
 
-const char *MCTP_STATE_STRING[] = {
-	"Wait: Sync Start", "Wait: Revision", "Wait: Len",  "Data",
-	"Data: Escaped",    "Wait: FCS1",     "Wait: FCS2", "Wait: Sync End",
+static const char *const MCTP_STATE_STRING[] = {
+       "Wait: Sync Start", "Wait: Revision", "Wait: Len",  "Data",
+       "Data: Escaped",    "Wait: FCS1",     "Wait: FCS2", "Wait: Sync End",
 };
 
 struct mctp_serial_header {
@@ -229,23 +230,23 @@ static void mctp_uart_callback(const struct device *dev, struct uart_event *evt,
 			mctp_uart_consume(binding, evt->data.rx.buf[evt->data.rx.offset + i]);
 		}
 		break;
-	case UART_RX_BUF_REQUEST:
-		for (int i = 0; i < sizeof(binding->rx_buf_used); i++) {
-			if (!binding->rx_buf_used[i]) {
-				binding->rx_buf_used[i] = true;
-				uart_rx_buf_rsp(dev, binding->rx_buf[i],
-						sizeof(binding->rx_buf[i]));
-				break;
-			}
-		}
-		break;
-	case UART_RX_BUF_RELEASED:
-		for (int i = 0; i < sizeof(binding->rx_buf_used); i++) {
-			if (binding->rx_buf[i] == evt->data.rx_buf.buf) {
-				binding->rx_buf_used[i] = false;
-				break;
-			}
-		}
+       case UART_RX_BUF_REQUEST:
+               for (size_t i = 0; i < ARRAY_SIZE(binding->rx_buf_used); i++) {
+                       if (!binding->rx_buf_used[i]) {
+                               binding->rx_buf_used[i] = true;
+                               uart_rx_buf_rsp(dev, binding->rx_buf[i],
+                                               sizeof(binding->rx_buf[i]));
+                               break;
+                       }
+               }
+               break;
+       case UART_RX_BUF_RELEASED:
+               for (size_t i = 0; i < ARRAY_SIZE(binding->rx_buf_used); i++) {
+                       if (binding->rx_buf[i] == evt->data.rx_buf.buf) {
+                               binding->rx_buf_used[i] = false;
+                               break;
+                       }
+               }
 		break;
 	case UART_RX_STOPPED:
 		break;
