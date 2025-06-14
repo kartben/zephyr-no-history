@@ -1974,8 +1974,47 @@ ZTEST(coap, test_response_matching)
 			zassert_is_null(match,
 					"Found unexpected response match, test %d match %d",
 					response - test_responses, match - matches);
-		}
-	}
+        }
+}
+
+ZTEST(coap, test_insert_extended_option)
+{
+       struct coap_packet cpkt;
+       struct coap_option options[2];
+       uint8_t *data = data_buf[0];
+       uint8_t tag_val[] = {0xaa, 0xbb};
+       const char *path = "p";
+       int r;
+
+       r = coap_packet_init(&cpkt, data, COAP_BUF_SIZE, COAP_VERSION_1,
+                            COAP_TYPE_CON, 0, NULL, COAP_METHOD_GET, 0x1234);
+       zassert_equal(r, 0, "Could not init packet");
+
+       r = coap_packet_append_option(&cpkt, COAP_OPTION_REQUEST_TAG,
+                                     tag_val, sizeof(tag_val));
+       zassert_equal(r, 0, "Could not append request-tag");
+
+       r = coap_packet_append_option(&cpkt, COAP_OPTION_URI_PATH,
+                                     path, strlen(path));
+       zassert_equal(r, 0, "Could not append uri-path");
+
+       memset(options, 0, sizeof(options));
+       r = coap_packet_parse(&cpkt, cpkt.data, cpkt.offset, options, 2);
+       zassert_equal(r, 0, "Failed to parse packet");
+
+       zassert_equal(options[0].delta, COAP_OPTION_URI_PATH,
+                     "First option delta mismatch");
+       zassert_equal(options[0].len, strlen(path),
+                     "URI path len mismatch");
+       zassert_mem_equal(options[0].value, path, strlen(path),
+                         "URI path mismatch");
+
+       zassert_equal(options[1].delta, COAP_OPTION_REQUEST_TAG,
+                     "Request-Tag option delta mismatch");
+       zassert_equal(options[1].len, sizeof(tag_val),
+                     "Request-Tag len mismatch");
+       zassert_mem_equal(options[1].value, tag_val, sizeof(tag_val),
+                         "Request-Tag value mismatch");
 }
 
 ZTEST_SUITE(coap, NULL, NULL, NULL, NULL, NULL);
