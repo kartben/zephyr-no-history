@@ -192,8 +192,8 @@ static void send_sf(void)
 {
 	int ret;
 
-	ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF,
-			 &rx_addr, &tx_addr, send_complete_cb, INT_TO_POINTER(ISOTP_N_OK));
+       ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF,
+                        &tx_addr, &rx_addr, send_complete_cb, INT_TO_POINTER(ISOTP_N_OK));
 	zassert_equal(ret, 0, "Send returned %d", ret);
 }
 
@@ -222,8 +222,8 @@ static void send_test_data(const uint8_t *data, size_t len)
 {
 	int ret;
 
-	ret = isotp_send(&send_ctx, can_dev, data, len, &rx_addr, &tx_addr,
-			 send_complete_cb, INT_TO_POINTER(ISOTP_N_OK));
+       ret = isotp_send(&send_ctx, can_dev, data, len, &tx_addr, &rx_addr,
+                        send_complete_cb, INT_TO_POINTER(ISOTP_N_OK));
 	zassert_equal(ret, 0, "Send returned %d", ret);
 }
 
@@ -457,9 +457,9 @@ ZTEST(isotp_conformance, test_send_sf_ext)
 	zassert_true((filter_id >= 0), "Negative filter number [%d]",
 		     filter_id);
 
-	ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF_EXT,
-			 &rx_addr_ext, &tx_addr_ext, send_complete_cb,
-			 INT_TO_POINTER(ISOTP_N_OK));
+       ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF_EXT,
+                        &tx_addr_ext, &rx_addr_ext, send_complete_cb,
+                        INT_TO_POINTER(ISOTP_N_OK));
 	zassert_equal(ret, 0, "Send returned %d", ret);
 
 	check_frame_series(&des_frame, 1, &frame_msgq);
@@ -514,9 +514,9 @@ ZTEST(isotp_conformance, test_send_sf_fixed)
 	zassert_true((filter_id >= 0), "Negative filter number [%d]",
 		     filter_id);
 
-	ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF,
-			 &rx_addr_fixed, &tx_addr_fixed, send_complete_cb,
-			 INT_TO_POINTER(ISOTP_N_OK));
+       ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF,
+                        &tx_addr_fixed, &rx_addr_fixed, send_complete_cb,
+                        INT_TO_POINTER(ISOTP_N_OK));
 	zassert_equal(ret, 0, "Send returned %d", ret);
 
 	check_frame_series(&des_frame, 1, &frame_msgq);
@@ -1032,8 +1032,8 @@ ZTEST(isotp_conformance, test_canfd_mandatory_padding)
 
 	filter_id = add_rx_msgq(rx_addr.std_id, CAN_STD_ID_MASK);
 
-	ret = isotp_send(&send_ctx, can_dev, random_data, data_size_sf,
-			 &rx_addr, &tx_addr, send_complete_cb, INT_TO_POINTER(ISOTP_N_OK));
+       ret = isotp_send(&send_ctx, can_dev, random_data, data_size_sf,
+                        &tx_addr, &rx_addr, send_complete_cb, INT_TO_POINTER(ISOTP_N_OK));
 	zassert_equal(ret, 0, "Send returned %d", ret);
 
 	ret = k_msgq_get(&frame_msgq, &frame, K_MSEC(500));

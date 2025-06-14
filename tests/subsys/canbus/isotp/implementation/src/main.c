@@ -56,8 +56,8 @@ static void send_sf(const struct device *can_dev)
 {
 	int ret;
 
-	ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF,
-			 &rx_addr, &tx_addr, send_complete_cb, NULL);
+       ret = isotp_send(&send_ctx, can_dev, random_data, DATA_SIZE_SF,
+                        &tx_addr, &rx_addr, send_complete_cb, NULL);
 	zassert_equal(ret, 0, "Send returned %d", ret);
 }
 
@@ -106,8 +106,8 @@ static void send_test_data(const struct device *can_dev, const uint8_t *data,
 {
 	int ret;
 
-	ret = isotp_send(&send_ctx, can_dev, data, len, &rx_addr, &tx_addr,
-			  send_complete_cb, NULL);
+       ret = isotp_send(&send_ctx, can_dev, data, len, &tx_addr, &rx_addr,
+                         send_complete_cb, NULL);
 	zassert_equal(ret, 0, "Send returned %d", ret);
 }
 

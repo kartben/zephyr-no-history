@@ -314,8 +314,8 @@ int isotp_recv_net(struct isotp_recv_ctx *rctx, struct net_buf **buffer, k_timeo
  * @param can_dev     The CAN device to be used for sending and receiving.
  * @param data        Data to be sent.
  * @param len         Length of the data to be sent.
- * @param rx_addr     Identifier for FC frames.
  * @param tx_addr     Identifier for outgoing frames the receiver listens on.
+ * @param rx_addr     Identifier for FC frames.
  * @param complete_cb Function called on completion or NULL.
  * @param cb_arg      Argument passed to the complete callback.
  *
@@ -338,8 +338,8 @@ int isotp_send(struct isotp_send_ctx *sctx, const struct device *can_dev,
  * @param can_dev     The CAN device to be used for sending and receiving.
  * @param data        Data to be sent.
  * @param len         Length of the data to be sent.
- * @param rx_addr     Identifier for FC frames.
  * @param tx_addr     Identifier for outgoing frames the receiver listens on.
+ * @param rx_addr     Identifier for FC frames.
  * @param complete_cb Function called on completion or NULL.
  * @param cb_arg      Argument passed to the complete callback.
  * @param timeout     Timeout for buffer allocation.
@@ -363,8 +363,8 @@ int isotp_send_ctx_buf(const struct device *can_dev,
  * @param can_dev     The CAN device to be used for sending and receiving.
  * @param data        Data to be sent.
  * @param len         Length of the data to be sent.
- * @param rx_addr     Identifier for FC frames.
  * @param tx_addr     Identifier for outgoing frames the receiver listens on.
+ * @param rx_addr     Identifier for FC frames.
  * @param complete_cb Function called on completion or NULL.
  * @param cb_arg      Argument passed to the complete callback.
  * @param timeout     Timeout for buffer allocation.
@@ -393,8 +393,8 @@ int isotp_send_net_ctx_buf(const struct device *can_dev,
  * @param can_dev     The CAN device to be used for sending and receiving.
  * @param data        Data to be sent.
  * @param len         Length of the data to be sent.
- * @param rx_addr     Identifier for FC frames.
  * @param tx_addr     Identifier for outgoing frames the receiver listens on.
+ * @param rx_addr     Identifier for FC frames.
  * @param complete_cb Function called on completion or NULL.
  * @param cb_arg      Argument passed to the complete callback.
  * @param timeout     Timeout for buffer allocation.

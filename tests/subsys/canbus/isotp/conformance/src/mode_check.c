@@ -57,7 +57,7 @@ ZTEST(isotp_conformance_mode_check, test_send)
 	uint8_t buf[] = { 1, 2, 3 };
 	int err;
 
-	err = isotp_send(&send_ctx, can_dev, buf, sizeof(buf), &rx_addr, &tx_addr, NULL, NULL);
+       err = isotp_send(&send_ctx, can_dev, buf, sizeof(buf), &tx_addr, &rx_addr, NULL, NULL);
 	if (IS_ENABLED(CONFIG_TEST_USE_CAN_FD_MODE) && !canfd_capable) {
 		zassert_equal(err, ISOTP_N_ERROR);
 	} else {
