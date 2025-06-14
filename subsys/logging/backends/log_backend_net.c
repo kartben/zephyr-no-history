@@ -236,7 +236,7 @@ static bool check_net_init_done(void)
 
 		released = zsock_close(ctx->sock);
 		if (released < 0) {
-			LOG_ERR("Cannot release socket (%d)", ret);
+			LOG_ERR("Cannot release socket (%d)", released);
 			ret = false;
 		} else {
 			/* The socket is successfully closed so we flag it
