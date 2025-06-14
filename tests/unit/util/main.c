@@ -673,6 +673,8 @@ ZTEST(util, test_DIV_ROUND_CLOSEST)
 	/* 7 / 3 = 2.(3) -> 2 */
 	zassert_equal(DIV_ROUND_CLOSEST(7, 3), 2);
 	zassert_equal(DIV_ROUND_CLOSEST(-7, 3), -2);
+        unsigned int u = 2U;
+        zassert_equal(DIV_ROUND_CLOSEST(-5, u), -3);
 }
 
 ZTEST(util, test_IF_DISABLED)
