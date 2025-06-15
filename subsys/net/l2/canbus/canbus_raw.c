@@ -32,17 +32,16 @@ static inline int canbus_send(struct net_if *iface, struct net_pkt *pkt)
 {
 	const struct canbus_api *api = net_if_get_device(iface)->api;
 	int ret;
-
+	
 	if (!api) {
 		return -ENOENT;
 	}
-
+	
 	ret = net_l2_send(api->send, net_if_get_device(iface), iface, pkt);
 	if (!ret) {
 		ret = net_pkt_get_len(pkt);
-		net_pkt_unref(pkt);
 	}
-
+	
 	return ret;
 }
 
