@@ -388,23 +388,25 @@ def variant_v2_qualifiers(variant, qualifiers = None):
 
 
 def board_v2_qualifiers(board):
-    qualifiers_list = []
-
-    for s in board.socs:
-        if s.cpuclusters:
-            for c in s.cpuclusters:
-                id_str = s.name + '/' + c.name
-                qualifiers_list.append(id_str)
-                for v in c.variants:
-                    qualifiers_list.extend(variant_v2_qualifiers(v, id_str))
-        else:
-            qualifiers_list.append(s.name)
-            for v in s.variants:
-                qualifiers_list.extend(variant_v2_qualifiers(v, s.name))
-
-    for v in board.variants:
-        qualifiers_list.extend(variant_v2_qualifiers(v))
-    return qualifiers_list
+	cached = getattr(board, '_qualifiers_cache', None)
+	if cached is not None:
+		return cached
+	qualifiers_list = []
+	for s in board.socs:
+		if s.cpuclusters:
+			for c in s.cpuclusters:
+				id_str = s.name + '/' + c.name
+				qualifiers_list.append(id_str)
+				for v in c.variants:
+					qualifiers_list.extend(variant_v2_qualifiers(v, id_str))
+		else:
+			qualifiers_list.append(s.name)
+			for v in s.variants:
+				qualifiers_list.extend(variant_v2_qualifiers(v, s.name))
+	for v in board.variants:
+		qualifiers_list.extend(variant_v2_qualifiers(v))
+	object.__setattr__(board, '_qualifiers_cache', qualifiers_list)
+	return qualifiers_list
 
 
 def board_v2_qualifiers_csv(board):
