@@ -138,8 +138,33 @@ ZTEST(coap, test_build_simple_pdu)
 	payload_start = coap_packet_get_payload(&cpkt, &payload_len);
 
 	zassert_equal(payload_len, sizeof(payload), "Invalid payload length");
-	zassert_equal_ptr(payload_start, cpkt.data + cpkt.offset - payload_len,
-			  "Invalid payload pointer");
+        zassert_equal_ptr(payload_start, cpkt.data + cpkt.offset - payload_len,
+                          "Invalid payload pointer");
+}
+
+ZTEST(coap, test_append_option_ext_16)
+{
+	uint8_t expected_pdu[] = { 0x40, 0x01, 0x00, 0x00,
+	                          0xE0, 0x00, 0x17 };
+	struct coap_packet cpkt;
+	uint8_t *data = data_buf[0];
+	int r;
+	r = coap_packet_init(&cpkt, data, COAP_BUF_SIZE,
+	 COAP_VERSION_1, COAP_TYPE_CON, 0, NULL,
+	 COAP_METHOD_GET, 0);
+	zassert_equal(r, 0, "Could not initialize packet");
+	r = coap_packet_append_option(&cpkt, COAP_OPTION_REQUEST_TAG,
+	      NULL, 0);
+	zassert_equal(r, 0, "Could not append option");
+	zassert_equal(cpkt.hdr_len, COAP_FIXED_HEADER_SIZE,
+	 "Invalid header length");
+	zassert_equal(cpkt.opt_len, 3, "Invalid options length");
+	zassert_equal(cpkt.delta, COAP_OPTION_REQUEST_TAG,
+	 "Wrong delta");
+	zassert_equal(cpkt.offset, sizeof(expected_pdu),
+	 "Wrong packet size");
+	zassert_mem_equal(expected_pdu, cpkt.data, cpkt.offset,
+	 "Built packet doesn't match reference packet");
 }
 
 /* No options, No payload */
