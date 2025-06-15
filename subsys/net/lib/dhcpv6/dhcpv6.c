@@ -77,10 +77,10 @@ static void dhcpv6_generate_tid(struct net_if *iface)
 	sys_rand_get(iface->config.dhcpv6.tid, sizeof(iface->config.dhcpv6.tid));
 }
 
-static void dhcvp6_update_deadlines(struct net_if *iface, int64_t now,
-				    uint32_t t1, uint32_t t2,
-				    uint32_t preferred_lifetime,
-				    uint32_t valid_lifetime)
+static void dhcpv6_update_deadlines(struct net_if *iface, int64_t now,
+	uint32_t t1, uint32_t t2,
+	uint32_t preferred_lifetime,
+	uint32_t valid_lifetime)
 {
 	uint64_t t1_abs, t2_abs, expire_abs;
 
@@ -141,9 +141,9 @@ static void dhcvp6_update_deadlines(struct net_if *iface, int64_t now,
 		iface->config.dhcpv6.t2 = t2_abs;
 	}
 
-	if (iface->config.dhcpv6.expire < expire_abs) {
+	if (iface->config.dhcpv6.expire > expire_abs) {
 		iface->config.dhcpv6.expire = expire_abs;
-	}
+}
 }
 
 static void dhcpv6_set_timeout(struct net_if *iface, uint64_t timeout)
@@ -1799,7 +1799,7 @@ static int dhcpv6_handle_reply(struct net_if *iface, struct net_pkt *pkt,
 		memcpy(&iface->config.dhcpv6.addr, &ia_na.iaaddr.addr,
 		       sizeof(iface->config.dhcpv6.addr));
 
-		dhcvp6_update_deadlines(iface, now, ia_na.t1, ia_na.t2,
+		dhcpv6_update_deadlines(iface, now, ia_na.t1, ia_na.t2,
 					ia_na.iaaddr.preferred_lifetime,
 					ia_na.iaaddr.valid_lifetime);
 
@@ -1846,7 +1846,7 @@ prefix:
 		memcpy(&iface->config.dhcpv6.prefix, &ia_pd.iaprefix.prefix,
 		       sizeof(iface->config.dhcpv6.prefix));
 
-		dhcvp6_update_deadlines(iface, now, ia_pd.t1, ia_pd.t2,
+		dhcpv6_update_deadlines(iface, now, ia_pd.t1, ia_pd.t2,
 					ia_pd.iaprefix.preferred_lifetime,
 					ia_pd.iaprefix.valid_lifetime);
 
