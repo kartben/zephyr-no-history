@@ -181,8 +181,8 @@ if(NOT BOARD_DIR)
 endif()
 
 set(format_str "{NAME}\;{DIR}\;{HWM}\;")
-set(format_str "${format_str}{REVISION_FORMAT}\;{REVISION_DEFAULT}\;{REVISION_EXACT}\;")
-set(format_str "${format_str}{REVISIONS}\;{SOCS}\;{QUALIFIERS}")
+string(APPEND format_str "{REVISION_FORMAT}\;{REVISION_DEFAULT}\;{REVISION_EXACT}\;")
+string(APPEND format_str "{REVISIONS}\;{SOCS}\;{QUALIFIERS}")
 
 list(TRANSFORM BOARD_DIRECTORIES PREPEND "--board-dir=" OUTPUT_VARIABLE board_dir_arg)
 execute_process(${list_boards_commands} --board=${BOARD} ${board_dir_arg}
@@ -320,18 +320,16 @@ set(BOARD_EXTENSIONS ON CACHE BOOL "Support board extensions")
 zephyr_get(BOARD_EXTENSIONS)
 
 # Process board extensions
-if(BOARD_EXTENSIONS)
-  get_filename_component(board_dir_name ${BOARD_DIR} NAME)
+	if(BOARD_EXTENSIONS)
+	get_filename_component(board_dir_name ${BOARD_DIR} NAME)
 
-  foreach(root ${BOARD_ROOT})
-    set(board_extension_dir ${root}/boards/extensions/${board_dir_name})
-    if(NOT EXISTS ${board_extension_dir})
-      continue()
-    endif()
-
-    list(APPEND BOARD_EXTENSION_DIRS ${board_extension_dir})
-  endforeach()
-endif()
+	foreach(root ${BOARD_ROOT})
+	set(board_extension_dir ${root}/boards/extensions/${board_dir_name})
+	if(EXISTS ${board_extension_dir})
+	list(APPEND BOARD_EXTENSION_DIRS ${board_extension_dir})
+	endif()
+	endforeach()
+	endif()
 build_info(board name VALUE ${BOARD})
 string(REGEX REPLACE "^/" "" qualifiers "${BOARD_QUALIFIERS}")
 build_info(board qualifiers VALUE ${qualifiers})

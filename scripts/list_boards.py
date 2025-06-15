@@ -330,12 +330,11 @@ def find_v2_boards(args):
 
     boards = {}
     board_extensions = []
-    board_files = []
     if args.board_dir:
         board_files = [d / BOARD_YML for d in args.board_dir]
     else:
-        for root in unique_paths(args.board_roots):
-            board_files.extend((root / 'boards').rglob(BOARD_YML))
+        board_files = [p for root in unique_paths(args.board_roots)
+                       for p in (root / 'boards').rglob(BOARD_YML)]
 
     for board_yml in board_files:
         b, e = load_v2_boards(args.board, board_yml, systems)
