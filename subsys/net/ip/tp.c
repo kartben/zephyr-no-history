@@ -303,7 +303,8 @@ uint32_t tp_seq_track(int kind, uint32_t *pvalue, int req,
 		seq->of = __builtin_uadd_overflow(seq->old_value, seq->req,
 							&seq->value);
 	} else {
-		seq->value += req;
+		/* seq->value was zeroed by k_calloc(), so add from old value */
+		seq->value = seq->old_value + req;
 	}
 
 	*pvalue = seq->value;
