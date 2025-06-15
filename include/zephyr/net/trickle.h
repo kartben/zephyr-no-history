@@ -62,7 +62,7 @@ struct net_trickle {
 	uint8_t k;		/**< Redundancy constant */
 	uint8_t c;		/**< Consistency counter */
 
-	bool double_to;         /**< Flag telling if the internval is doubled */
+	bool double_to;         /**< Flag telling if the interval is doubled */
 
 	struct k_work_delayable timer; /**< Internal timer struct */
 	net_trickle_cb_t cb;	/**< Callback to be called when timer expires */

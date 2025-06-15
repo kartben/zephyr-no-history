@@ -136,9 +136,12 @@ static void trickle_timeout(struct k_work *work)
 
 static void setup_new_interval(struct net_trickle *trickle)
 {
-	uint32_t t;
+       uint32_t t;
 
-	trickle->c = 0U;
+       trickle->c = 0U;
+
+       /* Ensure that the next timeout triggers interval_timeout() */
+       trickle->double_to = false;
 
 	t = get_t(trickle->I);
 
