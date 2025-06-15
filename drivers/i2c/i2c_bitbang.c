@@ -102,11 +102,7 @@ static int i2c_get_sda(struct i2c_bitbang *context)
 
 static void i2c_delay(unsigned int cycles_to_wait)
 {
-	uint32_t start = k_cycle_get_32();
-
-	/* Wait until the given number of cycles have passed */
-	while (k_cycle_get_32() - start < cycles_to_wait) {
-	}
+	k_busy_wait(k_cyc_to_us_ceil32(cycles_to_wait));
 }
 
 static void i2c_start(struct i2c_bitbang *context)
