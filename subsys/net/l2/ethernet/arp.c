@@ -962,15 +962,22 @@ void net_arp_clear_cache(struct net_if *iface)
 
 int net_arp_clear_pending(struct net_if *iface, struct in_addr *dst)
 {
-	struct arp_entry *entry = arp_entry_find_pending(iface, dst);
+       struct arp_entry *entry;
 
-	if (!entry) {
-		return -ENOENT;
-	}
+       k_mutex_lock(&arp_mutex, K_FOREVER);
 
-	arp_entry_cleanup(entry, true);
+       entry = arp_entry_get_pending(iface, dst);
+       if (!entry) {
+               k_mutex_unlock(&arp_mutex);
+               return -ENOENT;
+       }
 
-	return 0;
+       arp_entry_cleanup(entry, true);
+       sys_slist_prepend(&arp_free_entries, &entry->node);
+
+       k_mutex_unlock(&arp_mutex);
+
+       return 0;
 }
 
 int net_arp_foreach(net_arp_cb_t cb, void *user_data)

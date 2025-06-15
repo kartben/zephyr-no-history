@@ -694,4 +694,65 @@ ZTEST(arp_fn_tests, test_arp)
 	}
 }
 
+ZTEST(arp_fn_tests, test_arp_clear_pending)
+{
+	struct net_if *iface;
+	struct net_pkt *pkt;
+	struct net_pkt *arp_pkt = NULL;
+	struct net_ipv4_hdr *ipv4;
+	struct net_if_addr *ifaddr;
+	struct in_addr dst = { { { 192, 0, 2, 99 } } };
+	struct in_addr src = { { { 192, 0, 2, 1 } } };
+	struct in_addr netmask = { { { 255, 255, 255, 0 } } };
+	int len, ret;
+	
+	iface = net_if_lookup_by_dev(DEVICE_GET(net_arp_test));
+	zassert_not_null(iface, "Interface not found");
+	
+	net_arp_clear_cache(iface);
+	
+	ifaddr = net_if_ipv4_addr_add(iface, &src, NET_ADDR_MANUAL, 0);
+	zassert_not_null(ifaddr, "Cannot add address");
+	ifaddr->addr_state = NET_ADDR_PREFERRED;
+	
+	net_if_ipv4_set_netmask_by_addr(iface, &src, &netmask);
+	
+	len = strlen(app_data);
+	pkt = net_pkt_alloc_with_buffer(iface, sizeof(struct net_ipv4_hdr) + len,
+	 AF_INET, 0, K_SECONDS(1));
+	zassert_not_null(pkt, "out of mem");
+	
+	(void)net_linkaddr_set(net_pkt_lladdr_src(pkt),
+	       net_if_get_link_addr(iface)->addr,
+	       sizeof(struct net_eth_addr));
+	
+	ipv4 = (struct net_ipv4_hdr *)net_buf_add(pkt->buffer,
+	       sizeof(struct net_ipv4_hdr));
+	net_ipv4_addr_copy_raw(ipv4->src, (uint8_t *)&src);
+	net_ipv4_addr_copy_raw(ipv4->dst, (uint8_t *)&dst);
+	
+	net_pkt_set_ll_proto_type(pkt, NET_ETH_PTYPE_IP);
+	
+	memcpy(net_buf_add(pkt->buffer, len), app_data, len);
+	
+	ret = net_arp_prepare(pkt, &dst, NULL, &arp_pkt);
+	zassert_equal(NET_ARP_PKT_REPLACED, ret);
+	zassert_not_null(arp_pkt, "ARP request not created");
+	
+	net_pkt_unref(arp_pkt);
+	
+	ret = net_arp_clear_pending(iface, &dst);
+	zassert_equal(0, ret, "Clearing pending entry failed");
+	
+	ret = net_arp_clear_pending(iface, &dst);
+	zassert_equal(-ENOENT, ret, "Pending entry still exists");
+	
+	entry_found = false;
+	expected_hwaddr = &eth_hwaddr;
+	net_arp_foreach(arp_cb, &dst);
+	zassert_false(entry_found, "Entry not removed from cache");
+	
+	net_pkt_unref(pkt);
+	}
+
 ZTEST_SUITE(arp_fn_tests, NULL, NULL, NULL, NULL, NULL);
