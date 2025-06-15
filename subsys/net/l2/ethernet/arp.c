@@ -813,16 +813,24 @@ enum net_verdict net_arp_input(struct net_pkt *pkt,
 		return NET_DROP;
 	}
 
-	switch (ntohs(arp_hdr->opcode)) {
-	case NET_ARP_REQUEST:
-		/* If ARP request sender hw address is our address,
-		 * we must drop the packet.
-		 */
-		if (memcmp(&arp_hdr->src_hwaddr,
-			   net_if_get_link_addr(net_pkt_iface(pkt))->addr,
-			   sizeof(struct net_eth_addr)) == 0) {
-			return NET_DROP;
-		}
+       switch (ntohs(arp_hdr->opcode)) {
+       case NET_ARP_REQUEST:
+               /* If ARP request sender hw address is our address,
+                * we must drop the packet.
+                */
+               if (memcmp(&arp_hdr->src_hwaddr,
+                          net_if_get_link_addr(net_pkt_iface(pkt))->addr,
+                          sizeof(struct net_eth_addr)) == 0) {
+                       return NET_DROP;
+               }
+
+               if (!net_ipv4_is_addr_unspecified((struct in_addr *)arp_hdr->src_ipaddr) &&
+                   !net_ipv4_is_addr_mcast((struct in_addr *)arp_hdr->src_ipaddr)) {
+                       net_arp_update(net_pkt_iface(pkt),
+                                      (struct in_addr *)arp_hdr->src_ipaddr,
+                                      &arp_hdr->src_hwaddr,
+                                      false, true);
+               }
 
 		if (IS_ENABLED(CONFIG_NET_ARP_GRATUITOUS)) {
 			if (net_eth_is_addr_broadcast(dst) &&
@@ -895,20 +903,21 @@ enum net_verdict net_arp_input(struct net_pkt *pkt,
 		}
 		break;
 
-	case NET_ARP_REPLY:
-		if (net_ipv4_is_my_addr((struct in_addr *)arp_hdr->dst_ipaddr)) {
-			NET_DBG("Received ll %s for IP %s",
-				net_sprint_ll_addr(arp_hdr->src_hwaddr.addr,
-						   sizeof(struct net_eth_addr)),
-				net_sprint_ipv4_addr(arp_hdr->src_ipaddr));
-			net_arp_update(net_pkt_iface(pkt),
-				       (struct in_addr *)arp_hdr->src_ipaddr,
-				       &arp_hdr->src_hwaddr,
-				       false, false);
-		}
+       case NET_ARP_REPLY:
+               if (!net_ipv4_is_addr_unspecified((struct in_addr *)arp_hdr->src_ipaddr) &&
+                   !net_ipv4_is_addr_mcast((struct in_addr *)arp_hdr->src_ipaddr)) {
+                       NET_DBG("Received ll %s for IP %s",
+                               net_sprint_ll_addr(arp_hdr->src_hwaddr.addr,
+                                                  sizeof(struct net_eth_addr)),
+                               net_sprint_ipv4_addr(arp_hdr->src_ipaddr));
+                       net_arp_update(net_pkt_iface(pkt),
+                                      (struct in_addr *)arp_hdr->src_ipaddr,
+                                      &arp_hdr->src_hwaddr,
+                                      false, false);
+               }
 
-		break;
-	}
+               break;
+       }
 
 	net_pkt_unref(pkt);
 

@@ -690,8 +690,56 @@ ZTEST(arp_fn_tests, test_arp)
 		net_arp_foreach(arp_cb, &dst);
 		zassert_true(entry_found, "Changed entry not found");
 
-		net_pkt_unref(pkt);
-	}
+       net_pkt_unref(pkt);
+}
+
+ZTEST(arp_fn_tests, test_unsolicited_reply)
+{
+       struct net_arp_hdr *arp_hdr;
+       struct net_pkt *pkt;
+       struct net_if *iface;
+       struct net_eth_addr src_hwaddr = { { 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff } };
+       struct in_addr src_ip = { { { 192, 0, 2, 99 } } };
+       struct in_addr dst_ip = { { { 192, 0, 2, 100 } } };
+
+       iface = net_if_lookup_by_dev(DEVICE_GET(net_arp_test));
+
+       pkt = net_pkt_alloc_with_buffer(iface,
+                                       sizeof(struct net_eth_hdr) +
+                                       sizeof(struct net_arp_hdr),
+                                       AF_UNSPEC, 0, K_SECONDS(1));
+       zassert_not_null(pkt, "out of mem request");
+
+       setup_eth_header(iface, pkt, net_eth_broadcast_addr(), NET_ETH_PTYPE_ARP);
+
+       (void)net_buf_add(pkt->buffer, sizeof(struct net_eth_hdr));
+       (void)net_buf_pull(pkt->buffer, sizeof(struct net_eth_hdr));
+
+       arp_hdr = NET_ARP_HDR(pkt);
+       arp_hdr->hwtype = htons(NET_ARP_HTYPE_ETH);
+       arp_hdr->protocol = htons(NET_ETH_PTYPE_IP);
+       arp_hdr->hwlen = sizeof(struct net_eth_addr);
+       arp_hdr->protolen = sizeof(struct in_addr);
+       arp_hdr->opcode = htons(NET_ARP_REPLY);
+       memcpy(&arp_hdr->src_hwaddr, &src_hwaddr, sizeof(src_hwaddr));
+       memcpy(&arp_hdr->dst_hwaddr, net_eth_broadcast_addr(), 6);
+       net_ipv4_addr_copy_raw(arp_hdr->src_ipaddr, (uint8_t *)&src_ip);
+       net_ipv4_addr_copy_raw(arp_hdr->dst_ipaddr, (uint8_t *)&dst_ip);
+
+       (void)net_buf_add(pkt->buffer, sizeof(struct net_arp_hdr));
+
+       net_pkt_set_ll_proto_type(pkt, NET_ETH_PTYPE_ARP);
+
+       (void)net_arp_input(pkt,
+                           (struct net_eth_addr *)net_pkt_lladdr_src(pkt)->addr,
+                           (struct net_eth_addr *)net_pkt_lladdr_dst(pkt)->addr);
+
+       entry_found = false;
+       expected_hwaddr = &src_hwaddr;
+       net_arp_foreach(arp_cb, &src_ip);
+       zassert_true(entry_found, "Unsolicited reply not stored");
+
+	net_pkt_unref(pkt);
 }
 
 ZTEST_SUITE(arp_fn_tests, NULL, NULL, NULL, NULL, NULL);
