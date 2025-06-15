@@ -63,7 +63,8 @@ zephyr_check_cache(BOARD REQUIRED)
 # 'BOARD_ROOT' is a prioritized list of directories where boards may
 # be found. It always includes ${ZEPHYR_BASE} at the lowest priority (except for unittesting).
 if(NOT unittest IN_LIST Zephyr_FIND_COMPONENTS)
-  list(APPEND BOARD_ROOT ${ZEPHYR_BASE})
+	list(APPEND BOARD_ROOT ${ZEPHYR_BASE})
+	list(REMOVE_DUPLICATES BOARD_ROOT)
 endif()
 
 # Helper function for parsing a board's name, revision, and qualifiers,
