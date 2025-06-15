@@ -484,6 +484,23 @@ ZTEST(coap, test_match_path_uri)
 	zassert_false(r, "Matching %s failed", uri);
 }
 
+ZTEST(coap, test_match_path_uri_truncated)
+	{
+	const char * const resource_path[] = {
+	"devnull",
+	NULL
+	};
+	const char *uri = "/devn";
+	int r;
+
+	/* Ensure URI shorter than the resource path is not matched */
+
+	r = _coap_match_path_uri(resource_path, uri, strlen(uri));
+	zassert_false(r, "Matching %s succeeded", uri);
+	}
+
+	/* Additional check ensures memory safety */
+
 #define BLOCK_WISE_TRANSFER_SIZE_GET 150
 
 static void prepare_block1_request(struct coap_packet *req,
