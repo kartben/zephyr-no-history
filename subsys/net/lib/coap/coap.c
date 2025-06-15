@@ -65,8 +65,39 @@ static struct coap_transmission_parameters coap_transmission_params = {
 	.coap_backoff_percent = CONFIG_COAP_BACKOFF_PERCENT
 };
 
-static int insert_option(struct coap_packet *cpkt, uint16_t code, const uint8_t *value,
-			 uint16_t len);
+static int insert_option(struct coap_packet *cpkt, uint16_t code,
+                        const uint8_t *value, uint16_t len);
+
+static bool option_is_known(uint16_t code)
+{
+	switch (code) {
+	case COAP_OPTION_IF_MATCH:
+	case COAP_OPTION_URI_HOST:
+	case COAP_OPTION_ETAG:
+	case COAP_OPTION_IF_NONE_MATCH:
+	case COAP_OPTION_OBSERVE:
+	case COAP_OPTION_URI_PORT:
+	case COAP_OPTION_LOCATION_PATH:
+	case COAP_OPTION_URI_PATH:
+	case COAP_OPTION_CONTENT_FORMAT:
+	case COAP_OPTION_MAX_AGE:
+	case COAP_OPTION_URI_QUERY:
+	case COAP_OPTION_ACCEPT:
+	case COAP_OPTION_LOCATION_QUERY:
+	case COAP_OPTION_BLOCK2:
+	case COAP_OPTION_BLOCK1:
+	case COAP_OPTION_SIZE2:
+	case COAP_OPTION_PROXY_URI:
+	case COAP_OPTION_PROXY_SCHEME:
+	case COAP_OPTION_SIZE1:
+	case COAP_OPTION_ECHO:
+	case COAP_OPTION_NO_RESPONSE:
+	case COAP_OPTION_REQUEST_TAG:
+	return true;
+	default:
+	return false;
+	}
+}
 
 static inline void encode_u8(struct coap_packet *cpkt, uint16_t offset, uint8_t data)
 {
@@ -796,12 +827,17 @@ int coap_packet_parse(struct coap_packet *cpkt, uint8_t *data, uint16_t len,
 		struct coap_option *option;
 
 		option = num < opt_num ? &options[num++] : NULL;
-		ret = parse_option(cpkt->data, offset, &offset, cpkt->max_len,
-				   &delta, &opt_len, option);
+		ret = parse_option(cpkt->data, offset, &offset,
+				cpkt->max_len, &delta, &opt_len,
+				option);
 		if (ret < 0) {
 			return -EILSEQ;
 		} else if (ret == 0) {
 			break;
+		}
+
+		if (!option_is_known(delta) && (delta & 1U)) {
+			return -EBADMSG;
 		}
 	}
 
@@ -809,6 +845,7 @@ int coap_packet_parse(struct coap_packet *cpkt, uint8_t *data, uint16_t len,
 	cpkt->delta = delta;
 
 	return 0;
+
 }
 
 int coap_packet_set_path(struct coap_packet *cpkt, const char *path)

@@ -386,6 +386,24 @@ ZTEST(coap, test_parse_malformed_marker)
 	r = coap_packet_parse(&cpkt, data, sizeof(pdu), NULL, 0);
 	zassert_not_equal(r, 0, "Should've failed to parse a packet");
 }
+ZTEST(coap, test_parse_unknown_critical_option)
+{
+	struct coap_packet pkt;
+	struct coap_packet parsed;
+	uint8_t *data = data_buf[0];
+	int r;
+
+	r = coap_packet_init(&pkt, data, COAP_BUF_SIZE, COAP_VERSION_1,
+			COAP_TYPE_CON, 0, NULL, COAP_METHOD_GET, 0x1234);
+	zassert_equal(r, 0, "Could not init packet");
+
+	r = coap_packet_append_option(&pkt, 13, NULL, 0);
+	zassert_equal(r, 0, "Could not append option");
+
+	r = coap_packet_parse(&parsed, data, pkt.offset, NULL, 0);
+	zassert_equal(r, -EBADMSG, "Parser should reject unknown critical option");
+}
+
 
 ZTEST(coap, test_parse_req_build_ack)
 {
