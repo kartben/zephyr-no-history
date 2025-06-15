@@ -134,11 +134,11 @@ static inline bool insert_be16(struct coap_packet *cpkt, uint16_t data, size_t o
 		return false;
 	}
 
-	memmove(&cpkt->data[offset + 2], &cpkt->data[offset], cpkt->offset - offset);
+        memmove(&cpkt->data[offset + 2], &cpkt->data[offset], cpkt->offset - offset);
 
-	encode_be16(cpkt, cpkt->offset, data);
+        encode_be16(cpkt, offset, data);
 
-	return true;
+        return true;
 }
 
 static inline bool append(struct coap_packet *cpkt, const uint8_t *data, uint16_t len)

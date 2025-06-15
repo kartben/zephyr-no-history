@@ -1574,8 +1574,39 @@ ZTEST(coap, test_remove_all_coap_options)
 	r = coap_packet_remove_option(&cpkt, COAP_OPTION_MAX_AGE);
 	zassert_equal(r, 0, "Could not remove option");
 
-	ASSERT_OPTIONS_AND_PAYLOAD(cpkt, 0, expected_3, 14, 0);
+ASSERT_OPTIONS_AND_PAYLOAD(cpkt, 0, expected_3, 14, 0);
 }
+
+ZTEST(coap, test_build_extended_option)
+	{
+	struct coap_packet cpkt;
+	static const char token[] = "tok";
+	uint8_t *data = data_buf[0];
+	const uint8_t opt_val[] = { 1 };
+	int r;
+	
+	memset(data, 0, ARRAY_SIZE(data_buf[0]));
+	
+	r = coap_packet_init(&cpkt, data, COAP_BUF_SIZE, COAP_VERSION_1,
+	COAP_TYPE_CON, strlen(token), token,
+	COAP_METHOD_GET, 0x1234);
+	zassert_equal(r, 0, "Could not initialize packet");
+	
+	r = coap_packet_append_option(&cpkt, COAP_OPTION_REQUEST_TAG,
+	 opt_val, sizeof(opt_val));
+	zassert_equal(r, 0, "Could not append option");
+	
+	static const uint8_t expected[] = {
+	0x43, 0x01, 0x12, 0x34, 't', 'o', 'k',
+	0xE1, 0x00, 0x17, 0x01
+	};
+	
+	zassert_equal(cpkt.hdr_len, 7, "Wrong header len");
+	zassert_equal(cpkt.opt_len, 4, "Wrong option len");
+	zassert_equal(cpkt.offset, sizeof(expected), "Wrong offset");
+	zassert_equal(cpkt.delta, COAP_OPTION_REQUEST_TAG, "Wrong delta");
+	zassert_mem_equal(expected, cpkt.data, sizeof(expected), "Wrong data");
+	}
 
 ZTEST(coap, test_remove_non_existent_coap_option)
 {
