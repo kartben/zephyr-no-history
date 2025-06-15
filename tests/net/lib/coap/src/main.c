@@ -306,7 +306,7 @@ ZTEST(coap, test_parse_malformed_pkt)
 
 ZTEST(coap, test_parse_malformed_coap_hdr)
 {
-	uint8_t opt[] = { 0x55, 0x24, 0x49, 0x55, 0xff, 0x66, 0x77, 0x99};
+       uint8_t opt[] = { 0x55, 0x24, 0x49, 0x55, 0xff, 0x66, 0x77, 0x99};
 
 	struct coap_packet cpkt;
 	uint8_t *data = data_buf[0];
@@ -314,7 +314,31 @@ ZTEST(coap, test_parse_malformed_coap_hdr)
 
 	memcpy(data, opt, sizeof(opt));
 	r = coap_packet_parse(&cpkt, data, sizeof(opt), NULL, 0);
-	zassert_equal(r, -EBADMSG, "Should've failed to parse a packet");
+       zassert_equal(r, -EBADMSG, "Should've failed to parse a packet");
+}
+
+ZTEST(coap, test_parse_invalid_version)
+{
+       uint8_t pdu[] = { 0x00, 0x01, 0x00, 0x00 };
+       struct coap_packet cpkt;
+       uint8_t *data = data_buf[0];
+       int r;
+
+       memcpy(data, pdu, sizeof(pdu));
+       r = coap_packet_parse(&cpkt, data, sizeof(pdu), NULL, 0);
+       zassert_equal(r, -EBADMSG, "Should've failed to parse a packet");
+}
+
+ZTEST(coap, test_parse_invalid_code_class)
+{
+       uint8_t pdu[] = { 0x40, 0xC1, 0x00, 0x00 };
+       struct coap_packet cpkt;
+       uint8_t *data = data_buf[0];
+       int r;
+
+       memcpy(data, pdu, sizeof(pdu));
+       r = coap_packet_parse(&cpkt, data, sizeof(pdu), NULL, 0);
+       zassert_equal(r, -EBADMSG, "Should've failed to parse a packet");
 }
 
 ZTEST(coap, test_parse_malformed_opt)

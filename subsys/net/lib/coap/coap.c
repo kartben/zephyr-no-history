@@ -746,12 +746,14 @@ int coap_packet_remove_option(struct coap_packet *cpkt, uint16_t code)
 int coap_packet_parse(struct coap_packet *cpkt, uint8_t *data, uint16_t len,
 		      struct coap_option *options, uint8_t opt_num)
 {
-	uint16_t opt_len;
-	uint16_t offset;
-	uint16_t delta;
-	uint8_t num;
-	uint8_t tkl;
-	int ret;
+       uint16_t opt_len;
+       uint16_t offset;
+       uint16_t delta;
+       uint8_t num;
+       uint8_t ver;
+       uint8_t tkl;
+       uint8_t code;
+       int ret;
 
 	if (!cpkt || !data) {
 		return -EINVAL;
@@ -768,9 +770,19 @@ int coap_packet_parse(struct coap_packet *cpkt, uint8_t *data, uint16_t len,
 	cpkt->data = data;
 	cpkt->offset = len;
 	cpkt->max_len = len;
-	cpkt->opt_len = 0U;
-	cpkt->hdr_len = 0U;
-	cpkt->delta = 0U;
+       cpkt->opt_len = 0U;
+       cpkt->hdr_len = 0U;
+       cpkt->delta = 0U;
+
+       ver = (cpkt->data[0] & 0xC0) >> 6;
+       if (ver != COAP_VERSION_1) {
+               return -EBADMSG;
+       }
+
+       code = cpkt->data[1];
+       if ((code >> 5) > 5) {
+               return -EBADMSG;
+       }
 
 	/* Token lengths 9-15 are reserved. */
 	tkl = cpkt->data[0] & 0x0f;
