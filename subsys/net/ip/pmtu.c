@@ -42,10 +42,14 @@ static struct net_pmtu_entry *get_pmtu_entry(const struct sockaddr *dst)
 
 	k_mutex_lock(&lock, K_FOREVER);
 
-	for (i = 0; i < ARRAY_SIZE(pmtu_entries); i++) {
-		switch (dst->sa_family) {
-		case AF_INET:
-			if (IS_ENABLED(CONFIG_NET_IPV4_PMTU) &&
+       for (i = 0; i < ARRAY_SIZE(pmtu_entries); i++) {
+               if (!pmtu_entries[i].in_use) {
+                       continue;
+               }
+
+               switch (dst->sa_family) {
+               case AF_INET:
+                       if (IS_ENABLED(CONFIG_NET_IPV4_PMTU) &&
 			    pmtu_entries[i].dst.family == AF_INET &&
 			    net_ipv4_addr_cmp(&pmtu_entries[i].dst.in_addr,
 					      &net_sin(dst)->sin_addr)) {
