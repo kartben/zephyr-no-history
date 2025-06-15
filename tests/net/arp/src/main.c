@@ -694,4 +694,74 @@ ZTEST(arp_fn_tests, test_arp)
 	}
 }
 
+ZTEST(arp_fn_tests, test_mismatched_eth_src)
+{
+	struct net_eth_addr mismac = {
+	{ 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff }
+	};
+	struct net_eth_hdr *eth_hdr;
+	struct net_arp_hdr *arp_hdr;
+	struct net_eth_addr dst_lladdr;
+	struct net_if_addr *ifaddr;
+	struct net_if *iface;
+	struct net_pkt *pkt;
+	struct in_addr src = { { { 192, 0, 2, 2 } } };
+	struct in_addr dst = { { { 192, 0, 2, 1 } } };
+	
+	net_arp_init();
+	
+	iface = net_if_lookup_by_dev(DEVICE_GET(net_arp_test));
+	
+	ifaddr = net_if_ipv4_addr_add(iface, &dst, NET_ADDR_MANUAL, 0);
+	zassert_not_null(ifaddr, "Cannot add address");
+	ifaddr->addr_state = NET_ADDR_PREFERRED;
+	
+	net_arp_clear_cache(iface);
+	
+	(void)memset(&dst_lladdr, 0xff, sizeof(struct net_eth_addr));
+	
+	pkt = net_pkt_alloc_with_buffer(iface,
+	sizeof(struct net_eth_hdr) +
+	sizeof(struct net_arp_hdr),
+	AF_UNSPEC, 0, K_SECONDS(1));
+	zassert_not_null(pkt, "out of mem request");
+	
+	setup_eth_header(iface, pkt, net_eth_broadcast_addr(),
+	 NET_ETH_PTYPE_ARP);
+	
+	eth_hdr = (struct net_eth_hdr *)net_pkt_data(pkt);
+	net_buf_add(pkt->buffer, sizeof(struct net_eth_hdr));
+	net_buf_pull(pkt->buffer, sizeof(struct net_eth_hdr));
+	
+	arp_hdr = NET_ARP_HDR(pkt);
+	arp_hdr->hwtype = htons(NET_ARP_HTYPE_ETH);
+	arp_hdr->protocol = htons(NET_ETH_PTYPE_IP);
+	arp_hdr->hwlen = sizeof(struct net_eth_addr);
+	arp_hdr->protolen = sizeof(struct in_addr);
+	arp_hdr->opcode = htons(NET_ARP_REQUEST);
+	memcpy(&arp_hdr->src_hwaddr, &eth_hwaddr, 6);
+	(void)memset(&arp_hdr->dst_hwaddr, 0x00, sizeof(struct net_eth_addr));
+	net_ipv4_addr_copy_raw(arp_hdr->src_ipaddr, (uint8_t *)&src);
+	net_ipv4_addr_copy_raw(arp_hdr->dst_ipaddr, (uint8_t *)&dst);
+	
+	net_buf_add(pkt->buffer, sizeof(struct net_arp_hdr));
+	
+	net_pkt_set_ll_proto_type(pkt, NET_ETH_PTYPE_ARP);
+	
+	/* Use different Ethernet source address than ARP header */
+	memcpy(&eth_hdr->src.addr, mismac.addr, sizeof(mismac));
+	net_linkaddr_set(net_pkt_lladdr_src(pkt), mismac.addr,
+	   sizeof(struct net_eth_addr));
+	
+	send_status = -EINVAL;
+	
+	(enum net_verdict)net_arp_input(pkt,
+	(struct net_eth_addr *)net_pkt_lladdr_src(pkt)->addr,
+	&dst_lladdr);
+	
+	k_yield();
+	
+	zassert_false(send_status < 0, "ARP reply was not sent");
+}
+
 ZTEST_SUITE(arp_fn_tests, NULL, NULL, NULL, NULL, NULL);

@@ -871,20 +871,18 @@ enum net_verdict net_arp_input(struct net_pkt *pkt,
 		 */
 		if (net_eth_is_addr_unspecified(&arp_hdr->dst_hwaddr)) {
 			NET_DBG("Updating ARP cache for %s [%s] iface %d",
-				net_sprint_ipv4_addr(&arp_hdr->src_ipaddr),
-				net_sprint_ll_addr((uint8_t *)&arp_hdr->src_hwaddr,
-						   arp_hdr->hwlen),
-				net_if_get_by_iface(net_pkt_iface(pkt)));
-
+			net_sprint_ipv4_addr(&arp_hdr->src_ipaddr),
+			net_sprint_ll_addr((uint8_t *)&arp_hdr->src_hwaddr,
+			       arp_hdr->hwlen),
+			net_if_get_by_iface(net_pkt_iface(pkt)));
+			
 			net_arp_update(net_pkt_iface(pkt),
-				       (struct in_addr *)arp_hdr->src_ipaddr,
-				       &arp_hdr->src_hwaddr,
-				       false, true);
-
-			dst_hw_addr = &arp_hdr->src_hwaddr;
-		} else {
-			dst_hw_addr = src;
+			       (struct in_addr *)arp_hdr->src_ipaddr,
+			       &arp_hdr->src_hwaddr,
+			       false, true);
 		}
+
+		dst_hw_addr = &arp_hdr->src_hwaddr;
 
 		/* Send reply */
 		reply = arp_prepare_reply(net_pkt_iface(pkt), pkt, dst_hw_addr);
