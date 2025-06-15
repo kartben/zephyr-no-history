@@ -157,13 +157,13 @@ static void setup_new_interval(struct net_trickle *trickle)
 	((Imin < 2) || (Imin > (TICK_MAX >> 1)))
 
 int net_trickle_create(struct net_trickle *trickle,
-		       uint32_t Imin,
-		       uint8_t Imax,
-		       uint8_t k)
+	uint32_t Imin,
+	uint8_t Imax,
+	uint8_t k)
 {
-	if (!(trickle && Imax > 0 && k > 0 && !CHECK_IMIN(Imin))) {
-		return -EINVAL;
-	}
+	if (!(trickle && Imax > 0 && !CHECK_IMIN(Imin))) {
+	return -EINVAL;
+}
 
 	(void)memset(trickle, 0, sizeof(struct net_trickle));
 
@@ -244,9 +244,11 @@ void net_trickle_inconsistency(struct net_trickle *trickle)
 
 	if (trickle->I != trickle->Imin) {
 		NET_DBG("inconsistency");
-
 		trickle->I = trickle->Imin;
 	}
 
+	trickle->double_to = false;
+
 	setup_new_interval(trickle);
 }
+
