@@ -14,6 +14,7 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 
 #include <zephyr/net/http/parser.h>
 #include <zephyr/net/socket.h>
@@ -124,16 +125,15 @@ static int transfer_request(struct coap_block_context *ctx, uint8_t *token, uint
 	}
 
 #if defined(CONFIG_LWM2M_FIRMWARE_UPDATE_PULL_COAP_PROXY_SUPPORT)
-	/* TODO: shift to lower case */
-	if (strncmp(context.uri, "http", 4) == 0) {
-		cursor = COAP2HTTP_PROXY_URI_PATH;
-	} else if (strncmp(context.uri, "coap", 4) == 0) {
-		cursor = COAP2COAP_PROXY_URI_PATH;
-	} else {
-		ret = -EPROTONOSUPPORT;
-		LOG_ERR("Unsupported schema");
-		goto cleanup;
-	}
+       if (strncasecmp(context.uri, "http", 4) == 0) {
+               cursor = COAP2HTTP_PROXY_URI_PATH;
+       } else if (strncasecmp(context.uri, "coap", 4) == 0) {
+               cursor = COAP2COAP_PROXY_URI_PATH;
+       } else {
+               ret = -EPROTONOSUPPORT;
+               LOG_ERR("Unsupported schema");
+               goto cleanup;
+       }
 
 	ret = coap_packet_append_option(&msg->cpkt, COAP_OPTION_URI_PATH, cursor, strlen(cursor));
 	if (ret < 0) {
