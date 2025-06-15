@@ -205,7 +205,6 @@ int dns_unpack_response_header(struct dns_msg_t *msg, int src_id)
 	if (dns_header_opcode(dns_header) != DNS_QUERY) {
 		return -EINVAL;
 	}
-
 	if (dns_header_z(dns_header) != 0) {
 		return -EINVAL;
 	}
@@ -462,7 +461,7 @@ int mdns_unpack_query_header(struct dns_msg_t *msg, uint16_t *src_id)
 		return -EINVAL;
 	}
 
-	if (dns_header_opcode(dns_header) != 0) {
+	if (dns_header_z(dns_header) != 0) {
 		return -EINVAL;
 	}
 
