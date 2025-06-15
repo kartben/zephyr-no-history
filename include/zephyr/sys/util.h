@@ -742,8 +742,8 @@ char *utf8_lcpy(char *dst, const char *src, size_t n);
  * @return true if pointer overflow detected, false otherwise
  */
 #define Z_DETECT_POINTER_OVERFLOW(addr, buflen)  \
-	(((buflen) != 0) &&                        \
-	((UINTPTR_MAX - (uintptr_t)(addr)) <= ((uintptr_t)((buflen) - 1))))
+       (((buflen) != 0) &&                        \
+       ((UINTPTR_MAX - (uintptr_t)(addr)) < ((uintptr_t)((buflen) - 1))))
 
 /**
  * @brief XOR n bytes

@@ -8,6 +8,7 @@
 #include <zephyr/sys/util.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 ZTEST(util, test_u8_to_dec) {
 	char text[4];
@@ -965,8 +966,20 @@ ZTEST(util, test_util_memeq)
 	mem_area_matching_1 = util_memeq(src1, src2, sizeof(src1));
 	mem_area_matching_2 = util_memeq(src1, src3, sizeof(src1));
 
-	zassert_true(mem_area_matching_1);
-	zassert_false(mem_area_matching_2);
+       zassert_true(mem_area_matching_1);
+       zassert_false(mem_area_matching_2);
+}
+
+ZTEST(util, test_Z_DETECT_POINTER_OVERFLOW)
+{
+       uintptr_t max_addr = UINTPTR_MAX;
+
+       zassert_false(Z_DETECT_POINTER_OVERFLOW((void *)max_addr, 1),
+                     "overflow reported for single byte at max address");
+       zassert_true(Z_DETECT_POINTER_OVERFLOW((void *)max_addr, 2),
+                    "overflow not detected for two bytes at max address");
+       zassert_false(Z_DETECT_POINTER_OVERFLOW((void *)0, 1),
+                     "overflow reported for address 0 len 1");
 }
 
 ZTEST_SUITE(util, NULL, NULL, NULL, NULL, NULL);
