@@ -1763,16 +1763,17 @@ int net_dhcpv4_server_foreach_lease(struct net_if *iface,
 
 	k_mutex_lock(&server_lock, K_FOREVER);
 
-	if (iface == NULL) {
-		for (int i = 0; i < ARRAY_SIZE(server_ctx); i++) {
-			if (server_ctx[i].iface != NULL) {
-				dhcpv4_server_foreach_lease_on_ctx(
-						&server_ctx[i], cb, user_data);
-			}
-		}
+        if (iface == NULL) {
+                for (int i = 0; i < ARRAY_SIZE(server_ctx); i++) {
+                        if (server_ctx[i].iface != NULL) {
+                                dhcpv4_server_foreach_lease_on_ctx(
+                                                &server_ctx[i], cb, user_data);
+                        }
+                }
 
-		return 0;
-	}
+                k_mutex_unlock(&server_lock);
+                return 0;
+        }
 
 	for (int i = 0; i < ARRAY_SIZE(server_ctx); i++) {
 		if (server_ctx[i].iface == iface) {
