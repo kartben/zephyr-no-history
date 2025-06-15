@@ -482,6 +482,11 @@ ZTEST(coap, test_match_path_uri)
 	uri = "/devnull*";
 	r = _coap_match_path_uri(resource_path, uri, strlen(uri));
 	zassert_false(r, "Matching %s failed", uri);
+	/* truncated URI should not match */
+
+	uri = "/fo";
+	r = _coap_match_path_uri(resource_path, uri, strlen(uri));
+	zassert_false(r, "Matching %s failed", uri);
 }
 
 #define BLOCK_WISE_TRANSFER_SIZE_GET 150
