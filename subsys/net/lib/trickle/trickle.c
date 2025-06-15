@@ -76,7 +76,7 @@ static void double_interval_timeout(struct net_trickle *trickle)
 
 	NET_DBG("doubling time %u", rand_time);
 
-	trickle->Istart = k_uptime_get_32() + rand_time;
+	trickle->Istart = k_uptime_get_32();
 	trickle->double_to = false;
 
 	k_work_reschedule(&trickle->timer, K_MSEC(rand_time));
