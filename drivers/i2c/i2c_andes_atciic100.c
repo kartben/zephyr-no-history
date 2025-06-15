@@ -164,14 +164,9 @@ static int i2c_atciic100_transfer(const struct device *dev,
 		if (burst_write_len > MAX_XFER_SZ) {
 			return -EIO;
 		}
-		for (count = 0; count < burst_write_len; count++) {
-			if (count < msgs[0].len) {
-				burst_write_buf[count] = msgs[0].buf[count];
-			} else {
-				burst_write_buf[count] =
-					msgs[1].buf[count - msgs[0].len];
-			}
-		}
+		memcpy(burst_write_buf, msgs[0].buf, msgs[0].len);
+		memcpy(burst_write_buf + msgs[0].len, msgs[1].buf,
+			msgs[1].len);
 		ret = i2c_atciic100_controller_send(dev, addr, burst_write_buf,
 							burst_write_len, true);
 		goto exit;
