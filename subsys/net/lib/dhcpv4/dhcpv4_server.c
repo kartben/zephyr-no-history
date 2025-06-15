@@ -986,16 +986,16 @@ static void dhcpv4_handle_discover(struct dhcpv4_server_ctx *ctx,
 			break;
 		}
 		struct in_addr addr = { 0 };
-
+		
 		if (slot->state == DHCPV4_SERVER_ADDR_FREE &&
 		    address_provider_callback) {
-			ret = address_provider_callback(ctx->iface, &client_id, &addr,
-							address_provider_callback_user_data);
-			if (ret == 0) {
-				selected = slot;
-				slot->addr = addr;
-			}
-			break;
+		ret = address_provider_callback(ctx->iface, &client_id, &addr,
+		address_provider_callback_user_data);
+		if (ret == 0) {
+		selected = slot;
+		slot->addr = addr;
+		break;
+		}
 		}
 	}
 
