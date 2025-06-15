@@ -269,6 +269,9 @@ static int coap_server_process(int sock_fd)
 		case -EPERM:
 			ret = COAP_RESPONSE_CODE_NOT_ALLOWED;
 			break;
+		case -ENOMEM:
+			ret = COAP_RESPONSE_CODE_SERVICE_UNAVAILABLE;
+			break;
 		}
 
 		/* Shortcut for replying a code without a body */

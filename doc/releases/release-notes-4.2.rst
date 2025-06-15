@@ -773,6 +773,9 @@ New Drivers
 * Networking
 
    * :dtcompatible:`nordic,nrf-nfct-v2`
+   * CoAP server now maps observer allocation failures (``-ENOMEM``)
+     to ``5.03 Service Unavailable`` as recommended in
+     :rfc:`7252#section-5.9`.
 
 * Octal SPI
 

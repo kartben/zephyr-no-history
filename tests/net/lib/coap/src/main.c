@@ -74,6 +74,9 @@ static uint8_t data_buf[2][COAP_BUF_SIZE];
 #define COAP_MAX_AGE      0xffffff
 #define COAP_FIRST_AGE    2
 
+#define RESPONSE_CLASS(x)((x) >> 5)
+#define RESPONSE_DETAIL(x)((x) & 0x1F)
+
 extern bool coap_age_is_newer(int v1, int v2);
 
 ZTEST(coap, test_build_empty_pdu)
@@ -1974,8 +1977,19 @@ ZTEST(coap, test_response_matching)
 			zassert_is_null(match,
 					"Found unexpected response match, test %d match %d",
 					response - test_responses, match - matches);
-		}
-	}
+        }
+}
+
+ZTEST(coap, test_response_code_classification)
+	{
+	zassert_equal(RESPONSE_CLASS(COAP_RESPONSE_CODE_BAD_REQUEST), 4U,
+	"Wrong class for 4.00");
+	zassert_equal(RESPONSE_DETAIL(COAP_RESPONSE_CODE_BAD_REQUEST), 0U,
+	"Wrong detail for 4.00");
+	zassert_equal(RESPONSE_CLASS(COAP_RESPONSE_CODE_SERVICE_UNAVAILABLE), 5U,
+	"Wrong class for 5.03");
+	zassert_equal(RESPONSE_DETAIL(COAP_RESPONSE_CODE_SERVICE_UNAVAILABLE), 3U,
+"Wrong detail for 5.03");
 }
 
 ZTEST_SUITE(coap, NULL, NULL, NULL, NULL, NULL);
