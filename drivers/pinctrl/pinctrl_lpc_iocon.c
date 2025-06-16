@@ -12,7 +12,7 @@
 #endif
 
 /* IOCON register addresses. */
-static uint32_t volatile *iocon[] = {
+static volatile uint32_t * const iocon[] = {
 #if (DT_NODE_HAS_STATUS_OKAY(DT_NODELABEL(iocon)))
 	(uint32_t *)DT_REG_ADDR(DT_NODELABEL(iocon)),
 #else

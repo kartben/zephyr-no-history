@@ -122,7 +122,7 @@ static int mcux_pcc_init(const struct device *dev)
 }
 
 #ifdef CONFIG_SOC_MIMX8UD7
-static uint32_t clocks[] = {
+static const uint32_t clocks[] = {
 	/* clocks managed through PCC4 */
 	kCLOCK_Lpuart7,
 };
@@ -132,7 +132,7 @@ static uint32_t clocks[] = {
  * from the HAL. For these SOCs, the clock ID will be built based
  * on the value passed from the DTS and the PCC base.
  */
-static uint32_t clocks[] = {};
+static const uint32_t clocks[] = {};
 #endif /* CONFIG_SOC_MIMX8UD7 */
 
 #define MCUX_PCC_INIT(inst)						\

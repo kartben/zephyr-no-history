@@ -51,7 +51,7 @@ enum clk_ids {
 };
 
 /* NOTE: the array MUST be sorted by module field */
-static struct cpg_clk_info_table core_props[] = {
+static const struct cpg_clk_info_table core_props[] = {
 	RCAR_CORE_CLK_INFO_ITEM(R8A779F0_CLK_S0D12_PER, RCAR_CPG_NONE, RCAR_CPG_NONE,
 				RCAR_CPG_KHZ(66660)),
 
@@ -69,7 +69,7 @@ static struct cpg_clk_info_table core_props[] = {
 };
 
 /* NOTE: the array MUST be sorted by module field */
-static struct cpg_clk_info_table mod_props[] = {
+static const struct cpg_clk_info_table mod_props[] = {
 	RCAR_MOD_CLK_INFO_ITEM(514, R8A779F0_CLK_SASYNCPERD1),
 	RCAR_MOD_CLK_INFO_ITEM(702, R8A779F0_CLK_S0D12_PER),
 	RCAR_MOD_CLK_INFO_ITEM(704, R8A779F0_CLK_S0D12_PER),

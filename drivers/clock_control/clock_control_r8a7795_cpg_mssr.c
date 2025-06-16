@@ -39,7 +39,7 @@ struct r8a7795_cpg_mssr_data {
 };
 
 /* NOTE: the array MUST be sorted by module field */
-static struct cpg_clk_info_table core_props[] = {
+static const struct cpg_clk_info_table core_props[] = {
 	RCAR_CORE_CLK_INFO_ITEM(R8A7795_CLK_S3D4, RCAR_CPG_NONE, RCAR_CPG_NONE,
 				RCAR_CPG_KHZ(66600)),
 
@@ -62,7 +62,7 @@ static struct cpg_clk_info_table core_props[] = {
 };
 
 /* NOTE: the array MUST be sorted by module field */
-static struct cpg_clk_info_table mod_props[] = {
+static const struct cpg_clk_info_table mod_props[] = {
 	RCAR_MOD_CLK_INFO_ITEM(310, R8A7795_CLK_S3D4),
 
 	RCAR_MOD_CLK_INFO_ITEM(311, R8A7795_CLK_SD3),

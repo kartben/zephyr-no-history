@@ -17,10 +17,10 @@
 	[DT_STRING_TOKEN_BY_IDX(node_id, prop, idx)] =                                             \
 		(volatile uint32_t *)DT_REG_ADDR_BY_IDX(node_id, idx),
 
-static volatile uint32_t *mstp_regs[] = {
+static volatile uint32_t * const mstp_regs[] = {
 	DT_FOREACH_PROP_ELEM(DT_NODELABEL(pclkblock), reg_names, MSTP_REGS_ELEM)};
 #else
-static volatile uint32_t *mstp_regs[] = {};
+static volatile uint32_t * const mstp_regs[] = {};
 #endif
 
 #if defined(CONFIG_CORTEX_M_SYSTICK)

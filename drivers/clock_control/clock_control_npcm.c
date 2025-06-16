@@ -124,7 +124,7 @@ struct freq_multiplier_t {
 	uint8_t hfcgml;
 };
 
-static struct freq_multiplier_t freq_multiplier[] = {
+static const struct freq_multiplier_t freq_multiplier[] = {
 	{.ofmclk = 100000000, .hfcgn = 0x82, .hfcgmh = 0x0B, .hfcgml = 0xEC},
 	{.ofmclk = 96000000, .hfcgn = 0x82, .hfcgmh = 0x0B, .hfcgml = 0x72},
 	{.ofmclk = 80000000, .hfcgn = 0x82, .hfcgmh = 0x09, .hfcgml = 0x89},
@@ -139,7 +139,7 @@ struct clk_cfg_t {
 	uint16_t bus;
 };
 
-static struct clk_cfg_t clk_cfg[] = {
+static const struct clk_cfg_t clk_cfg[] = {
 	{.clock_id = NPCM_CLOCK_PWM_I, .bus = NPCM_CLOCK_BUS_LFCLK},
 	{.clock_id = NPCM_CLOCK_PWM_J, .bus = NPCM_CLOCK_BUS_LFCLK},
 	{.clock_id = NPCM_CLOCK_I3CI, .bus = NPCM_CLOCK_BUS_APB3},

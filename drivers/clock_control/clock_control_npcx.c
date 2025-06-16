@@ -34,7 +34,7 @@ struct npcx_pcc_config {
 #define HAL_PMC_INST(dev) \
 	((struct pmc_reg *)((const struct npcx_pcc_config *)(dev)->config)->base_pmc)
 
-static uint8_t pddwn_ctl_val[] = {NPCX_PWDWN_CTL_INIT};
+static const uint8_t pddwn_ctl_val[] = {NPCX_PWDWN_CTL_INIT};
 
 /* Clock controller local functions */
 static inline int npcx_clock_control_on(const struct device *dev,

@@ -88,7 +88,7 @@ struct mt9m114_resolution_config {
 	struct mt9m114_reg *params;
 };
 
-static struct mt9m114_reg mt9m114_init_config[] = {
+static const struct mt9m114_reg mt9m114_init_config[] = {
 	{0x098E, 2, 0x1000},    /* LOGICAL_ADDRESS_ACCESS */
 	{0xC97E, 1, 0x01},      /* CAM_SYSCTL_PLL_ENABLE */
 	{0xC980, 2, 0x0120},    /* CAM_SYSCTL_PLL_DIVIDER_M_N = 288 */
@@ -126,7 +126,7 @@ static struct mt9m114_reg mt9m114_init_config[] = {
 	{0xC984, 2, 0x8000}, /* CAM_PORT_OUTPUT_CONTROL, for MIPI CSI-2 interface : 0x8000 */
 	{/* NULL terminated */}};
 
-static struct mt9m114_reg mt9m114_480_272[] = {
+static const struct mt9m114_reg mt9m114_480_272[] = {
 	{MT9M114_CAM_SENSOR_CFG_Y_ADDR_START, 2, 0x00D4},     /* 212 */
 	{MT9M114_CAM_SENSOR_CFG_X_ADDR_START, 2, 0x00A4},     /* 164 */
 	{MT9M114_CAM_SENSOR_CFG_Y_ADDR_END, 2, 0x02FB},       /* 763 */
@@ -142,7 +142,7 @@ static struct mt9m114_reg mt9m114_480_272[] = {
 	{MT9M114_CAM_STAT_AE_INITIAL_WINDOW_YEND, 2, 0x0035}, /* 53 */
 	{/* NULL terminated */}};
 
-static struct mt9m114_reg mt9m114_640_480[] = {
+static const struct mt9m114_reg mt9m114_640_480[] = {
 	{MT9M114_CAM_SENSOR_CFG_Y_ADDR_START, 2, 0x0000},     /* 0 */
 	{MT9M114_CAM_SENSOR_CFG_X_ADDR_START, 2, 0x0000},     /* 0 */
 	{MT9M114_CAM_SENSOR_CFG_Y_ADDR_END, 2, 0x03CD},       /* 973 */
@@ -158,7 +158,7 @@ static struct mt9m114_reg mt9m114_640_480[] = {
 	{MT9M114_CAM_STAT_AE_INITIAL_WINDOW_YEND, 2, 0x005F}, /* 95 */
 	{/* NULL terminated */}};
 
-static struct mt9m114_reg mt9m114_1280_720[] = {
+static const struct mt9m114_reg mt9m114_1280_720[] = {
 	{MT9M114_CAM_SENSOR_CFG_Y_ADDR_START, 2, 0x007C},     /* 124 */
 	{MT9M114_CAM_SENSOR_CFG_X_ADDR_START, 2, 0x0004},     /* 4 */
 	{MT9M114_CAM_SENSOR_CFG_Y_ADDR_END, 2, 0x0353},       /* 851 */
@@ -174,7 +174,7 @@ static struct mt9m114_reg mt9m114_1280_720[] = {
 	{MT9M114_CAM_STAT_AE_INITIAL_WINDOW_YEND, 2, 0x008F}, /* 143 */
 	{/* NULL terminated */}};
 
-static struct mt9m114_resolution_config resolution_configs[] = {
+static const struct mt9m114_resolution_config resolution_configs[] = {
 	{.width = 480, .height = 272, .params = mt9m114_480_272},
 	{.width = 640, .height = 480, .params = mt9m114_640_480},
 	{.width = 1280, .height = 720, .params = mt9m114_1280_720},

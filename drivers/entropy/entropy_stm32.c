@@ -107,7 +107,7 @@ struct entropy_stm32_rng_dev_data {
 	RNG_POOL_DEFINE(thr, CONFIG_ENTROPY_STM32_THR_POOL_SIZE);
 };
 
-static struct stm32_pclken pclken_rng[] = STM32_DT_INST_CLOCKS(0);
+static const struct stm32_pclken pclken_rng[] = STM32_DT_INST_CLOCKS(0);
 
 static struct entropy_stm32_rng_dev_cfg entropy_stm32_rng_config = {
 	.pclken	= pclken_rng

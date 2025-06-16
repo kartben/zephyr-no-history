@@ -108,7 +108,7 @@ static void seed_was_set(char *argv, int offset)
 
 static void add_fake_entropy_option(void)
 {
-	static struct args_struct_t entropy_options[] = {
+       static const struct args_struct_t entropy_options[] = {
 		{
 			.option = "seed",
 			.name = "r_seed",

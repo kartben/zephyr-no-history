@@ -264,7 +264,7 @@ static void eeprom_native_cleanup(void)
 
 static void eeprom_native_options(void)
 {
-	static struct args_struct_t eeprom_options[] = {
+       static const struct args_struct_t eeprom_options[] = {
 		{.option = "eeprom",
 		 .name = "path",
 		 .type = 's',

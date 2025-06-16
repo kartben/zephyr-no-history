@@ -30,7 +30,7 @@
 
 /* swap both arguments */
 #define PFC_REG_ADDRESS(idx, inst) DT_INST_REG_ADDR_BY_IDX(inst, idx)
-static uintptr_t reg_base[] = {
+static const uintptr_t reg_base[] = {
 	LISTIFY(DT_NUM_REGS(DT_DRV_INST(0)), PFC_REG_ADDRESS, (,), 0)
 };
 

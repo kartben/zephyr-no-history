@@ -13,7 +13,7 @@
 #include <soc.h>
 
 /* Port register addresses. */
-static PORT_Type *ports[] = {
+static PORT_Type * const ports[] = {
 	(PORT_Type *)DT_REG_ADDR(DT_NODELABEL(porta)),
 	(PORT_Type *)DT_REG_ADDR(DT_NODELABEL(portb)),
 	(PORT_Type *)DT_REG_ADDR(DT_NODELABEL(portc)),
