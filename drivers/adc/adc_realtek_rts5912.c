@@ -286,7 +286,7 @@ static int adc_rts5912_init(const struct device *dev)
 		.ref_internal = DT_INST_PROP(n, vref_mv),                                          \
 	};                                                                                         \
                                                                                                    \
-	static struct adc_rts5912_config adc_rts5912_dev_cfg_##n = {                               \
+	static const struct adc_rts5912_config adc_rts5912_dev_cfg_##n = {                               \
 		.regs = (struct adc_regs *)(DT_INST_REG_ADDR(n)),                                  \
 		.pcfg = PINCTRL_DT_INST_DEV_CONFIG_GET(n),                                         \
 		DEV_CONFIG_CLK_DEV_INIT(n)};                                                       \

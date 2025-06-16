@@ -29,8 +29,8 @@ LOG_MODULE_REGISTER(uc81xx, CONFIG_DISPLAY_LOG_LEVEL);
 #define UC81XX_PIXELS_PER_BYTE		8U
 
 struct uc81xx_dt_array {
-	uint8_t *data;
-	uint8_t len;
+       const uint8_t *data;
+       uint8_t len;
 };
 
 enum uc81xx_profile_type {
@@ -718,11 +718,11 @@ static DEVICE_API(display, uc81xx_driver_api) = {
 	.set_pixel_format = uc81xx_set_pixel_format,
 };
 
-#define UC81XX_MAKE_ARRAY_OPT(n, p)					\
-	static uint8_t data_ ## n ## _ ## p[] = DT_PROP_OR(n, p, {})
+#define UC81XX_MAKE_ARRAY_OPT(n, p)
+	static const uint8_t data_ ## n ## _ ## p[] = DT_PROP_OR(n, p, {})
 
-#define UC81XX_MAKE_ARRAY(n, p)						\
-	static uint8_t data_ ## n ## _ ## p[] = DT_PROP(n, p)
+#define UC81XX_MAKE_ARRAY(n, p)
+	static const uint8_t data_ ## n ## _ ## p[] = DT_PROP(n, p)
 
 #define UC81XX_ASSIGN_ARRAY(n, p)					\
 	{								\

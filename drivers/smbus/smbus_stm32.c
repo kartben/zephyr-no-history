@@ -276,7 +276,7 @@ static DEVICE_API(smbus, smbus_stm32_api) = {
 
 #define SMBUS_STM32_DEVICE_INIT(n)                                                                 \
 	PINCTRL_DT_INST_DEFINE(n);                                                                 \
-	static struct smbus_stm32_config smbus_stm32_config_##n = {                                \
+	static const struct smbus_stm32_config smbus_stm32_config_##n = {                                \
 		.i2c_dev = DEVICE_DT_GET(DT_INST_PROP(n, i2c)),                                    \
 		.pcfg = PINCTRL_DT_INST_DEV_CONFIG_GET(n),                                         \
 	};                                                                                         \

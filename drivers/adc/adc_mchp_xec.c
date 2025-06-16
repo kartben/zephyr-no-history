@@ -453,7 +453,7 @@ static int adc_xec_init(const struct device *dev)
 
 PINCTRL_DT_INST_DEFINE(0);
 
-static struct adc_xec_config adc_xec_dev_cfg_0 = {
+static const struct adc_xec_config adc_xec_dev_cfg_0 = {
 	.regs = (struct adc_xec_regs *)(DT_INST_REG_ADDR(0)),
 	.girq_single = (uint8_t)(DT_INST_PROP_BY_IDX(0, girqs, 0)),
 	.girq_single_pos = (uint8_t)(DT_INST_PROP_BY_IDX(0, girqs, 1)),

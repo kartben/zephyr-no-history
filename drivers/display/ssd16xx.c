@@ -71,8 +71,8 @@ struct ssd16xx_data {
 };
 
 struct ssd16xx_dt_array {
-	uint8_t *data;
-	uint8_t len;
+       const uint8_t *data;
+       uint8_t len;
 };
 
 struct ssd16xx_profile {
@@ -957,7 +957,7 @@ static DEVICE_API(display, ssd16xx_driver_api) = {
 };
 
 #if DT_HAS_COMPAT_STATUS_OKAY(solomon_ssd1608)
-static struct ssd16xx_quirks quirks_solomon_ssd1608 = {
+static const struct ssd16xx_quirks quirks_solomon_ssd1608 = {
 	.max_width = 320,
 	.max_height = 240,
 	.pp_width_bits = 16,
@@ -968,7 +968,7 @@ static struct ssd16xx_quirks quirks_solomon_ssd1608 = {
 #endif
 
 #if DT_HAS_COMPAT_STATUS_OKAY(solomon_ssd1673)
-static struct ssd16xx_quirks quirks_solomon_ssd1673 = {
+static const struct ssd16xx_quirks quirks_solomon_ssd1673 = {
 	.max_width = 250,
 	.max_height = 150,
 	.pp_width_bits = 8,
@@ -979,7 +979,7 @@ static struct ssd16xx_quirks quirks_solomon_ssd1673 = {
 #endif
 
 #if DT_HAS_COMPAT_STATUS_OKAY(solomon_ssd1675a)
-static struct ssd16xx_quirks quirks_solomon_ssd1675a = {
+static const struct ssd16xx_quirks quirks_solomon_ssd1675a = {
 	.max_width = 296,
 	.max_height = 160,
 	.pp_width_bits = 8,
@@ -1001,7 +1001,7 @@ static const struct ssd16xx_quirks quirks_solomon_ssd1680 = {
 #endif
 
 #if DT_HAS_COMPAT_STATUS_OKAY(solomon_ssd1681)
-static struct ssd16xx_quirks quirks_solomon_ssd1681 = {
+static const struct ssd16xx_quirks quirks_solomon_ssd1681 = {
 	.max_width = 200,
 	.max_height = 200,
 	.pp_width_bits = 8,
@@ -1017,8 +1017,8 @@ static struct ssd16xx_quirks quirks_solomon_ssd1681 = {
 			.len = sizeof(softstart_##n),			\
 		},
 
-#define SSD16XX_MAKE_ARRAY_OPT(n, p)					\
-	static uint8_t data_ ## n ## _ ## p[] = DT_PROP_OR(n, p, {})
+#define SSD16XX_MAKE_ARRAY_OPT(n, p)
+	static const uint8_t data_ ## n ## _ ## p[] = DT_PROP_OR(n, p, {})
 
 #define SSD16XX_ASSIGN_ARRAY(n, p)					\
 	{								\

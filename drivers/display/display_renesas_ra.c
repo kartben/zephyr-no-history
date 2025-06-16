@@ -497,7 +497,7 @@ static int display_init(const struct device *dev)
 			.line_detect_ipl = DT_INST_IRQ_BY_NAME(id, line, priority),                \
 			.underflow_1_irq = BSP_IRQ_DISABLED,                                       \
 			.underflow_2_irq = BSP_IRQ_DISABLED}};                                     \
-	static struct display_ra_config ra_config##id = {                                          \
+	static const struct display_ra_config ra_config##id = {                                          \
 		IRQ_CONFIGURE_DEFINE(id),                                                          \
 		.pincfg = RENESAS_RA_GLCDC_DEVICE_PINCTRL_GET(id),                                 \
 		.backlight_gpio = GPIO_DT_SPEC_INST_GET_OR(id, backlight_gpios, NULL),             \
