@@ -1,0 +1,6 @@
+tests:
+  benchmarks.gpio.bcm2711_config_overhead:
+    tags: drivers gpio benchmark raspberrypi bcm2711
+    platform_allow: rpi_4b
+    harness: ztest # Using ztest harness for benchmark structure and reporting
+    timeout: 120

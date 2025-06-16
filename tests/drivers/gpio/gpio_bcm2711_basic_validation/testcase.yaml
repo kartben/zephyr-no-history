@@ -1,0 +1,5 @@
+tests:
+  drivers.gpio.bcm2711_basic_validation:
+    tags: drivers gpio raspberrypi bcm2711
+    platform_allow: rpi_4b # Assuming 'rpi_4b' is the platform identifier
+    harness: ztest

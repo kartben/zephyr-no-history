@@ -1,0 +1,8 @@
+tests:
+  drivers.gpio.bcm2711_race_condition_stress:
+    tags: drivers gpio racecondition raspberrypi bcm2711
+    platform_allow: rpi_4b
+    harness: ztest
+    timeout: 120 # Allow more time for stress test
+    extra_configs:
+      - CONFIG_TEST_LOGGING_DEFERRED=y # if too much printk output

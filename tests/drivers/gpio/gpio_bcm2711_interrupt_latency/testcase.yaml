@@ -1,0 +1,8 @@
+tests:
+  drivers.gpio.bcm2711_interrupt_latency:
+    tags: drivers gpio interrupt latency raspberrypi bcm2711 benchmark
+    platform_allow: rpi_4b
+    harness: ztest
+    timeout: 60
+    extra_configs:
+      - CONFIG_CONSOLE_HANDLER=y # If using timing_h objects to print stats

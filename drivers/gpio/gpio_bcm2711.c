@@ -10,6 +10,7 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/gpio/gpio_utils.h>
 #include <zephyr/irq.h>
+#include <zephyr/spinlock.h>
 
 #define GPIO_REG_GROUP(n, cnt)       (n / cnt)
 #define GPIO_REG_SHIFT(n, cnt, bits) ((n % cnt) * bits)
@@ -64,6 +65,7 @@ struct gpio_bcm2711_data {
 	mem_addr_t base;
 
 	sys_slist_t cb;
+	struct k_spinlock lock;
 };
 
 static int gpio_bcm2711_pin_configure(const struct device *port, gpio_pin_t pin, gpio_flags_t flags)
@@ -72,8 +74,10 @@ static int gpio_bcm2711_pin_configure(const struct device *port, gpio_pin_t pin,
 	uint32_t group;
 	uint32_t shift;
 	uint32_t regval;
+	k_spinlock_key_t key = k_spin_lock(&data->lock);
 
 	if (flags & GPIO_OPEN_DRAIN) {
+		k_spin_unlock(&data->lock, key);
 		return -ENOTSUP;
 	}
 
@@ -121,6 +125,7 @@ static int gpio_bcm2711_pin_configure(const struct device *port, gpio_pin_t pin,
 		sys_write32(regval, GPPULL(data->base, group));
 	}
 
+	k_spin_unlock(&data->lock, key);
 	return 0;
 }
 
@@ -197,6 +202,7 @@ static int gpio_bcm2711_port_toggle_bits(const struct device *port, gpio_port_pi
 	struct gpio_bcm2711_data *data = DEV_DATA(port);
 	uint64_t regval, regmask;
 	uint64_t set, clr;
+	k_spinlock_key_t key = k_spin_lock(&data->lock);
 
 	regval = ((uint64_t)sys_read32(GPLEV(data->base, 0))) |
 		 ((uint64_t)sys_read32(GPLEV(data->base, 1)) << 32);
@@ -211,6 +217,7 @@ static int gpio_bcm2711_port_toggle_bits(const struct device *port, gpio_port_pi
 	sys_write32(FROM_U64(set, 1), GPSET(data->base, 1));
 	sys_write32(FROM_U64(clr, 1), GPCLR(data->base, 1));
 
+	k_spin_unlock(&data->lock, key);
 	return 0;
 }
 
@@ -221,6 +228,7 @@ static int gpio_bcm2711_pin_interrupt_configure(const struct device *port, gpio_
 	uint32_t group;
 	uint32_t shift;
 	uint32_t regval;
+	k_spinlock_key_t key = k_spin_lock(&data->lock);
 
 	group = GPIO_REG_GROUP(RPI_PIN_NUM(port, pin), IO_GROUPS);
 	shift = GPIO_REG_SHIFT(RPI_PIN_NUM(port, pin), IO_GROUPS, IO_BITS);
@@ -275,6 +283,7 @@ static int gpio_bcm2711_pin_interrupt_configure(const struct device *port, gpio_
 		}
 	}
 
+	k_spin_unlock(&data->lock, key);
 	return 0;
 }
 
