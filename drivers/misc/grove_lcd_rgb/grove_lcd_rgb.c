@@ -58,7 +58,7 @@ struct glcd_config {
 #define REGISTER_G	0x03
 #define REGISTER_B	0x02
 
-static uint8_t color_define[][3] = {
+static const uint8_t color_define[][3] = {
 	{ 255, 255, 255 },	/* white */
 	{ 255, 0,   0   },      /* red */
 	{ 0,   255, 0   },      /* green */

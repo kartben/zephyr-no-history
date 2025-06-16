@@ -60,7 +60,7 @@ static const struct flash_pages_layout gd32_fmc_v3_layout[] = {
 #define gd32_fmc_v3_ERASE_ERR FMC_STAT_OPERR
 
 /* SN bits in FMC_CTL are not continue values, use table below to map them. */
-static uint8_t gd32_fmc_v3_sectors[] = {
+static const uint8_t gd32_fmc_v3_sectors[] = {
 	0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U, 10U, 11U,
 	16U, 17U, 18U, 19U, 20U, 21U, 22U, 23U, 24U, 25U, 26U, 27U,
 	12U, 13U, 14U, 15U

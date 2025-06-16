@@ -55,7 +55,7 @@ extern volatile rfc_CMD_PROP_RADIO_DIV_SETUP_PA_t ieee802154_cc13xx_subg_radio_d
  * from SmartRF Studio (200kbps, 50kHz deviation, 2-GFSK, 311.8kHz Rx BW),
  * approximates SUN FSK PHY, 915 MHz band, operating mode #3.
  */
-static uint32_t ieee802154_cc13xx_overrides_sub_ghz[] = {
+static const uint32_t ieee802154_cc13xx_overrides_sub_ghz[] = {
 	/* DC/DC regulator: In Tx, use DCDCCTL5[3:0]=0x7 (DITHER_EN=0 and IPEAK=7). */
 	(uint32_t)0x00F788D3,
 	/* Set RF_FSCA.ANADIV.DIV_SEL_BIAS = 1. Bits [0:16, 24, 30] are don't care.. */
@@ -84,7 +84,7 @@ static uint32_t ieee802154_cc13xx_overrides_sub_ghz[] = {
 /* Radio values for CC13X2P */
 #elif defined(CONFIG_SOC_CC1352P) || defined(CONFIG_SOC_CC1352P7)
 /* CC1352P overrides from SmartRF Studio (200kbps, 50kHz deviation, 2-GFSK, 311.8kHz Rx BW) */
-static uint32_t ieee802154_cc13xx_overrides_sub_ghz[] = {
+static const uint32_t ieee802154_cc13xx_overrides_sub_ghz[] = {
 	/* Tx: Configure PA ramp time, PACTL2.RC=0x3 (in ADI0, set PACTL2[4:3]=0x1) */
 	ADI_2HALFREG_OVERRIDE(0, 16, 0x8, 0x8, 17, 0x1, 0x0),
 	/* Rx: Set AGC reference level to 0x16 (default: 0x2E) */
@@ -106,7 +106,7 @@ static uint32_t ieee802154_cc13xx_overrides_sub_ghz[] = {
 	(uint32_t)0x00F788D3,
 	(uint32_t)0xFFFFFFFF
 };
-static uint32_t rf_prop_overrides_tx_std[] = {
+static const uint32_t rf_prop_overrides_tx_std[] = {
 	/* The TX Power element should always be the first in the list */
 	TX_STD_POWER_OVERRIDE(0x013F),
 	/* The ANADIV radio parameter based on the LO divider (0) and front-end (0) settings */
@@ -119,7 +119,7 @@ static uint32_t rf_prop_overrides_tx_std[] = {
 	HW_REG_OVERRIDE(0x60A8, 0x0401),
 	(uint32_t)0xFFFFFFFF
 };
-static uint32_t rf_prop_overrides_tx_20[] = {
+static const uint32_t rf_prop_overrides_tx_20[] = {
 	/* The TX Power element should always be the first in the list */
 	TX20_POWER_OVERRIDE(0x001B8ED2),
 	/* The ANADIV radio parameter based on the LO divider (0) and front-end (0) settings */

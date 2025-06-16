@@ -36,7 +36,7 @@ LOG_MODULE_REGISTER(ieee802154_cc13xx_cc26xx);
 #endif
 
 /* Overrides from SmartRF Studio 7 2.13.0 */
-static uint32_t overrides[] = {
+static const uint32_t overrides[] = {
 	/* DC/DC regulator: In Tx, use DCDCCTL5[3:0]=0x3 (DITHER_EN=0 and IPEAK=3). */
 	0x00F388D3,
 	/* Rx: Set LNA bias current offset to +15 to saturate trim to max (default: 0) */

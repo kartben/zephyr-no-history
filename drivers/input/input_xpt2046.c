@@ -66,7 +66,7 @@ struct measurement {
  * Each follow-up command interleaves with previous conversion.
  * So first command starts at byte 0. Second command starts at byte 2.
  */
-static uint8_t tbuf[9] = {
+static const uint8_t tbuf[9] = {
 	[0] = START | CHANNEL(CH_Z1) | POWER_ON,
 	[2] = START | CHANNEL(CH_Z2) | POWER_ON,
 	[4] = START | CHANNEL(CH_X) | POWER_ON,

@@ -27,7 +27,7 @@ struct flash_mspi_nor_quirks {
 #define MXICY_MX25R_QE_MASK BIT(6)
 #define MXICY_MX25R_REGS_LEN 3
 
-static uint8_t mxicy_mx25r_hp_payload[MXICY_MX25R_REGS_LEN] = {
+static const uint8_t mxicy_mx25r_hp_payload[MXICY_MX25R_REGS_LEN] = {
 	MXICY_MX25R_QE_MASK, 0x0, MXICY_MX25R_LH_MASK
 };
 

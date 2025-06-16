@@ -115,7 +115,7 @@ static void gnss_nmea_generic_init_pipe(const struct device *dev)
 	data->uart_pipe = modem_backend_uart_init(&data->uart_backend, &uart_backend_config);
 }
 
-static uint8_t gnss_nmea_generic_char_delimiter[] = {'\r', '\n'};
+static const uint8_t gnss_nmea_generic_char_delimiter[] = {'\r', '\n'};
 
 static int gnss_nmea_generic_init_chat(const struct device *dev)
 {
