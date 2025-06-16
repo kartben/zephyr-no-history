@@ -43,7 +43,7 @@ struct lwm2m_event_log_obj {
 };
 
 static struct lwm2m_engine_obj lwm2m_event_log;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(LWM2M_EVENT_LOG_CLASS_ID, RW_OPT, U8),
 	OBJ_FIELD_EXECUTE_OPT(LWM2M_EVENT_LOG_START_ID),
 	OBJ_FIELD_EXECUTE_OPT(LWM2M_EVENT_LOG_STOP_ID),

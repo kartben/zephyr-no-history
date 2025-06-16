@@ -50,7 +50,7 @@ struct lwm2m_gw_obj {
 
 static struct lwm2m_gw_obj device_table[MAX_INSTANCE_COUNT];
 static struct lwm2m_engine_obj lwm2m_gw;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(LWM2M_GATEWAY_DEVICE_RID, R, STRING),
 	OBJ_FIELD_DATA(LWM2M_GATEWAY_PREFIX_RID, RW, STRING),
 	OBJ_FIELD_DATA(LWM2M_GATEWAY_IOT_DEVICE_OBJECTS_RID, R, STRING),

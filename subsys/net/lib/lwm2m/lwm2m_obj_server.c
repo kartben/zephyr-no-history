@@ -58,7 +58,7 @@ static bool mute_send[MAX_INSTANCE_COUNT];
 static bool boostrap_on_fail[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj server;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(SERVER_SHORT_SERVER_ID, R, U16),
 	OBJ_FIELD_DATA(SERVER_LIFETIME_ID, RW, U32),
 	OBJ_FIELD_DATA(SERVER_DEFAULT_MIN_PERIOD_ID, RW_OPT, U32),

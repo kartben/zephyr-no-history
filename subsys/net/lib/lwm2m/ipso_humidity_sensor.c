@@ -53,7 +53,7 @@ static double min_range_value[MAX_INSTANCE_COUNT];
 static double max_range_value[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj sensor;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(SENSOR_VALUE_RID, R, FLOAT),
 	OBJ_FIELD_DATA(SENSOR_UNITS_RID, R_OPT, STRING),
 	OBJ_FIELD_DATA(MIN_MEASURED_VALUE_RID, R_OPT, FLOAT),

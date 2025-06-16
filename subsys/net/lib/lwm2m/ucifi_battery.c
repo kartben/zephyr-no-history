@@ -38,7 +38,7 @@ static uint8_t battery_level[MAX_INSTANCE_COUNT];
 static uint32_t supply_loss_counter[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj battery;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(UCIFI_BATTERY_LEVEL_RID, R, U8),
 	OBJ_FIELD_DATA(UCIFI_BATTERY_CAPACITY_RID, R_OPT, FLOAT),
 	OBJ_FIELD_DATA(UCIFI_BATTERY_VOLTAGE_RID, R_OPT, FLOAT),

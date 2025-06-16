@@ -52,7 +52,7 @@ struct ipso_accel_data {
 static struct ipso_accel_data accel_data[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj accel;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(X_VALUE_RID, R, FLOAT),
 	OBJ_FIELD_DATA(Y_VALUE_RID, R_OPT, FLOAT),
 	OBJ_FIELD_DATA(Z_VALUE_RID, R_OPT, FLOAT),

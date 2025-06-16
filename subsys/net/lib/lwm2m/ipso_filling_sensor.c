@@ -54,7 +54,7 @@ static bool container_out_of_location[MAX_INSTANCE_COUNT];
 static bool container_out_of_position[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj fill_sensor;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(CONTAINER_HEIGHT_FILLING_SENSOR_RID, RW, U32),
 	OBJ_FIELD_DATA(ACTUAL_FILL_PERCENTAGE_FILLING_SENSOR_RID, R_OPT,
 		       FLOAT),

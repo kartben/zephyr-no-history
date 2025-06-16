@@ -109,7 +109,7 @@ static uint8_t cel;
 
 /* only 1 instance of Connection Monitoring object exists */
 static struct lwm2m_engine_obj connmon;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(CONNMON_NETWORK_BEARER_ID, R, U8),
 	OBJ_FIELD_DATA(CONNMON_AVAIL_NETWORK_BEARER_ID, R, U8),
 	OBJ_FIELD_DATA(CONNMON_RADIO_SIGNAL_STRENGTH, R, S16),

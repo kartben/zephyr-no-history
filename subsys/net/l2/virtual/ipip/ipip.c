@@ -633,7 +633,7 @@ LISTIFY(CONFIG_NET_L2_IPIP_TUNNEL_COUNT, NET_IPIP_INTERFACE_INIT, (;), _);
 #define INIT_IPIP_CONTEXT_PTR(x, _)					\
 	[x] = &ipip_context_data_##x
 
-static struct ipip_context *ipip_ctx[] = {
+static struct ipip_context *const ipip_ctx[] = {
 	LISTIFY(CONFIG_NET_L2_IPIP_TUNNEL_COUNT, INIT_IPIP_CONTEXT_PTR, (,), _)
 };
 

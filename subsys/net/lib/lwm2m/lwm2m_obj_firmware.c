@@ -61,7 +61,7 @@ static char package_uri[MAX_INSTANCE_COUNT][PACKAGE_URI_LEN];
 
 /* A varying number of firmware object exists */
 static struct lwm2m_engine_obj firmware;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(FIRMWARE_PACKAGE_ID, W, OPAQUE),
 	OBJ_FIELD_DATA(FIRMWARE_PACKAGE_URI_ID, RW, STRING),
 	OBJ_FIELD_EXECUTE(FIRMWARE_UPDATE_ID),

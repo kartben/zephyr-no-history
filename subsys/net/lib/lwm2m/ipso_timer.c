@@ -66,7 +66,7 @@ struct ipso_timer_data {
 static struct ipso_timer_data timer_data[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj ipso_timer;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(DELAY_DURATION_RID, RW, FLOAT),
 	OBJ_FIELD_DATA(REMAINING_TIME_RID, R_OPT, FLOAT),
 	OBJ_FIELD_DATA(MINIMUM_OFF_TIME_RID, RW_OPT, FLOAT),

@@ -61,7 +61,7 @@ static struct mgmt_event_entry new_event;
 K_MSGQ_DEFINE(event_msgq, sizeof(struct mgmt_event_entry),
 	      CONFIG_NET_MGMT_EVENT_QUEUE_SIZE, sizeof(uint32_t));
 
-static struct k_work_q *mgmt_work_q = COND_CODE_1(CONFIG_NET_MGMT_EVENT_SYSTEM_WORKQUEUE,
+static struct k_work_q *const mgmt_work_q = COND_CODE_1(CONFIG_NET_MGMT_EVENT_SYSTEM_WORKQUEUE,
 	(&k_sys_work_q), (&mgmt_work_q_obj));
 
 static void mgmt_event_work_handler(struct k_work *work);

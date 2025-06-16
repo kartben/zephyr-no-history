@@ -51,7 +51,7 @@ struct ipso_button_data {
 static struct ipso_button_data button_data[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj onoff_switch;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(DIGITAL_INPUT_STATE_RID, R, BOOL),
 	OBJ_FIELD_DATA(DIGITAL_INPUT_COUNTER_RID, R_OPT, S64),
 	OBJ_FIELD_DATA(APPLICATION_TYPE_RID, RW_OPT, STRING),

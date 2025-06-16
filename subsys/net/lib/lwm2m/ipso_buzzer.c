@@ -59,7 +59,7 @@ struct ipso_buzzer_data {
 static struct ipso_buzzer_data buzzer_data[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj ipso_buzzer;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(ON_OFF_RID, RW, BOOL),
 	OBJ_FIELD_DATA(LEVEL_RID, RW_OPT, FLOAT),
 	OBJ_FIELD_DATA(DELAY_DURATION_RID, RW_OPT, FLOAT),

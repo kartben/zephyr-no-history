@@ -98,7 +98,7 @@ static uint8_t  binding_mode[DEVICE_STRING_SHORT];
 
 /* only 1 instance of device object exists */
 static struct lwm2m_engine_obj device;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(DEVICE_MANUFACTURER_ID, R_OPT, STRING),
 	OBJ_FIELD_DATA(DEVICE_MODEL_NUMBER_ID, R_OPT, STRING),
 	OBJ_FIELD_DATA(DEVICE_SERIAL_NUMBER_ID, R_OPT, STRING),

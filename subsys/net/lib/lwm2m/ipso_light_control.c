@@ -51,7 +51,7 @@ static char colour[MAX_INSTANCE_COUNT][LIGHT_STRING_LONG];
 static char units[MAX_INSTANCE_COUNT][LIGHT_STRING_SHORT];
 
 static struct lwm2m_engine_obj light_control;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(ON_OFF_RID, RW, BOOL),
 	OBJ_FIELD_DATA(DIMMER_RID, RW_OPT, U8),
 	OBJ_FIELD_DATA(ON_TIME_RID, RW_OPT, S32),

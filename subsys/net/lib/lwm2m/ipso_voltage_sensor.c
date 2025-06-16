@@ -58,7 +58,7 @@ static double calibration_coefficient[MAX_INSTANCE_COUNT];
 static char app_type[MAX_INSTANCE_COUNT][APP_TYPE_STR_MAX_SIZE];
 
 static struct lwm2m_engine_obj sensor;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(SENSOR_VALUE_RID, R, FLOAT),
 	OBJ_FIELD_DATA(SENSOR_UNITS_RID, R_OPT, STRING),
 	OBJ_FIELD_DATA(MIN_MEASURED_VALUE_RID, R_OPT, FLOAT),

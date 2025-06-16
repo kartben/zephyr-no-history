@@ -78,7 +78,7 @@ struct ac_data {
 static struct ac_data ac_data[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj ac_obj;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(ACCESS_CONTROL_OBJECT_ID, RW, U16),
 	OBJ_FIELD_DATA(ACCESS_CONTROL_OBJECT_INSTANCE_ID, RW, U16),
 	/* Mark obj id and obj_inst id is RO, but needs to be written to by bootstrap server */

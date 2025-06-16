@@ -59,7 +59,7 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 	 PEER_ADDRESS_MAX + MULTICAST_GRP_ADDRESS_MAX + MULTICAST_GRP_KEY_MAX)
 
 static struct lwm2m_engine_obj lpwan;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(UCIFI_LPWAN_NETWORK_TYPE_RID, R_OPT, STRING),
 	OBJ_FIELD_DATA(UCIFI_LPWAN_IPV4_ADDRESS_RID, RW_OPT, STRING),
 	OBJ_FIELD_DATA(UCIFI_LPWAN_IPV6_ADDRESS_RID, RW_OPT, STRING),

@@ -90,7 +90,7 @@ LISTIFY(CONFIG_NET_VLAN_COUNT, ETH_DEFINE_VLAN, (;), _);
 #define INIT_VLAN_CONTEXT_PTR(x, _)					\
 	[x] = &vlan_context_data_##x					\
 
-static struct vlan_context *vlan_ctx[] = {
+static struct vlan_context *const vlan_ctx[] = {
 	LISTIFY(CONFIG_NET_VLAN_COUNT, INIT_VLAN_CONTEXT_PTR, (,), _)
 };
 

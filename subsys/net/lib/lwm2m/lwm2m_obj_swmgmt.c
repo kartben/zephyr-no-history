@@ -58,7 +58,7 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #define RESOURCE_INSTANCE_COUNT (SWMGMT_MAX_ID - NR_EXEC_RESOURCES)
 
 static struct lwm2m_engine_obj swmgmt;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD(SWMGMT_PACKAGE_NAME_ID, R, STRING),
 	OBJ_FIELD(SWMGMT_PACKAGE_VERSION_ID, R, STRING),
 	OBJ_FIELD(SWMGMT_PACKAGE_ID, W_OPT, OPAQUE),

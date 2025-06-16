@@ -83,7 +83,7 @@ static uint8_t  security_mode[MAX_INSTANCE_COUNT];
 static uint16_t short_server_id[MAX_INSTANCE_COUNT];
 
 static struct lwm2m_engine_obj security;
-static struct lwm2m_engine_obj_field fields[] = {
+static const struct lwm2m_engine_obj_field fields[] = {
 	OBJ_FIELD_DATA(SECURITY_SERVER_URI_ID, RW, STRING),
 	OBJ_FIELD_DATA(SECURITY_BOOTSTRAP_FLAG_ID, W, BOOL),
 	OBJ_FIELD_DATA(SECURITY_MODE_ID, W, U8),
