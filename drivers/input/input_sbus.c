@@ -25,7 +25,7 @@ struct sbus_input_channel {
 	uint32_t zephyr_code;
 };
 
-const struct uart_config uart_cfg_sbus = {
+static const struct uart_config uart_cfg_sbus = {
 	.baudrate = 100000,
 	.parity = UART_CFG_PARITY_EVEN,
 	.stop_bits = UART_CFG_STOP_BITS_2,
@@ -139,7 +139,7 @@ static void input_sbus_input_report_thread(const struct device *dev, void *dummy
 			}
 		} else {
 			ret = k_sem_take(&data->report_lock, K_MSEC(SBUS_INTERFRAME_SPACING_MS));
-			if (ret == -EBUSY) {
+			if (ret == -EAGAIN) {
 				continue;
 			} else if (ret < 0 || !data->in_sync) {
 				/* We've lost sync with the UART receiver */
