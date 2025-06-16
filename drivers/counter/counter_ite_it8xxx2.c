@@ -133,7 +133,8 @@ static int counter_it8xxx2_set_alarm(const struct device *dev, uint8_t chan_id,
 		return -EINVAL;
 	}
 
-	if (alarm_cfg->ticks > counter_it8xxx2_read32(dev, ET8CNTLLR)) {
+	if (alarm_cfg->ticks == 0) {
+		LOG_WRN("Alarm ticks is 0, this may not be intended.");
 		return -EINVAL;
 	}
 
