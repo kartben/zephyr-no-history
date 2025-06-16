@@ -130,8 +130,11 @@ static int counter_sam_tc_get_value(const struct device *dev, uint32_t *ticks)
 }
 
 static int counter_sam_tc_set_alarm(const struct device *dev, uint8_t chan_id,
-				    const struct counter_alarm_cfg *alarm_cfg)
+	const struct counter_alarm_cfg *alarm_cfg)
 {
+	if (chan_id >= MAX_ALARMS_PER_TC_CHANNEL) {
+		return -EINVAL;
+}
 	struct counter_sam_dev_data *data = dev->data;
 	const struct counter_sam_dev_cfg *const dev_cfg = dev->config;
 	Tc *tc = dev_cfg->regs;
@@ -194,6 +197,9 @@ static int counter_sam_tc_set_alarm(const struct device *dev, uint8_t chan_id,
 
 static int counter_sam_tc_cancel_alarm(const struct device *dev, uint8_t chan_id)
 {
+	if (chan_id >= MAX_ALARMS_PER_TC_CHANNEL) {
+		return -EINVAL;
+	}
 	struct counter_sam_dev_data *data = dev->data;
 	const struct counter_sam_dev_cfg *const dev_cfg = dev->config;
 	Tc *tc = dev_cfg->regs;
