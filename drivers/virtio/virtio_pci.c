@@ -583,7 +583,7 @@ static const struct virtio_driver_api virtio_pci_driver_api = {
 	BUILD_ASSERT(DT_NODE_HAS_COMPAT(DT_INST_PARENT(inst), pcie_controller));        \
 	DEVICE_PCIE_INST_DECLARE(inst);                                                 \
 	static struct virtio_pci_data virtio_pci_data##inst;                            \
-	static struct virtio_pci_config virtio_pci_config##inst = {                     \
+	static const struct virtio_pci_config virtio_pci_config##inst = {                     \
 		DEVICE_PCIE_INST_INIT(inst, pcie)                                           \
 	};                                                                              \
 	static int virtio_pci_init##inst(const struct device *dev)                      \

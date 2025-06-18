@@ -411,7 +411,7 @@ static DEVICE_API(i2c, i2c_wch_api) = {
 											\
 	static void i2c_wch_config_func_##inst(const struct device *dev);		\
 											\
-	static struct i2c_wch_config i2c_wch_cfg_##inst = {				\
+	static const struct i2c_wch_config i2c_wch_cfg_##inst = {				\
 		.pcfg = PINCTRL_DT_INST_DEV_CONFIG_GET(inst),				\
 		.irq_config_func = i2c_wch_config_func_##inst,				\
 		.clk_dev = DEVICE_DT_GET(DT_INST_CLOCKS_CTLR(inst)),			\

@@ -47,7 +47,7 @@ struct cap12xx_config {
 	struct i2c_dt_spec i2c;
 	const uint8_t input_channels;
 	const uint16_t *input_codes;
-	struct gpio_dt_spec *int_gpio;
+       const struct gpio_dt_spec *int_gpio;
 	bool repeat;
 	const uint16_t poll_interval_ms;
 	const uint8_t sensor_gain;
@@ -308,7 +308,7 @@ static int cap12xx_init(const struct device *dev)
 
 #define CAP12XX_INIT(index)                                                                        \
 	IF_ENABLED(DT_INST_NODE_HAS_PROP(index, int_gpios), (                                      \
-	static struct gpio_dt_spec cap12xx_int_gpio_##index =                                      \
+	static const struct gpio_dt_spec cap12xx_int_gpio_##index =                                      \
 		GPIO_DT_SPEC_INST_GET(index, int_gpios);))                                         \
 	static const uint16_t cap12xx_input_codes_##index[] = DT_INST_PROP(index, input_codes);    \
 	static const uint8_t cap12xx_signal_guard_##index[] =                                      \
