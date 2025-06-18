@@ -71,18 +71,18 @@ static void lvgl_pointer_process_event(struct input_event *evt, void *user_data)
 	if (cfg->invert_x) {
 		if (cap->current_orientation == DISPLAY_ORIENTATION_NORMAL ||
 		    cap->current_orientation == DISPLAY_ORIENTATION_ROTATED_180) {
-			tmp_point.x = cap->x_resolution - tmp_point.x;
+			tmp_point.x = cap->x_resolution - 1 - tmp_point.x;
 		} else {
-			tmp_point.x = cap->y_resolution - tmp_point.x;
+			tmp_point.x = cap->y_resolution - 1 - tmp_point.x;
 		}
 	}
 
 	if (cfg->invert_y) {
 		if (cap->current_orientation == DISPLAY_ORIENTATION_NORMAL ||
 		    cap->current_orientation == DISPLAY_ORIENTATION_ROTATED_180) {
-			tmp_point.y = cap->y_resolution - tmp_point.y;
+			tmp_point.y = cap->y_resolution - 1 - tmp_point.y;
 		} else {
-			tmp_point.y = cap->x_resolution - tmp_point.y;
+			tmp_point.y = cap->x_resolution - 1 - tmp_point.y;
 		}
 	}
 
@@ -94,14 +94,14 @@ static void lvgl_pointer_process_event(struct input_event *evt, void *user_data)
 		break;
 	case DISPLAY_ORIENTATION_ROTATED_90:
 		point->x = tmp_point.y;
-		point->y = cap->y_resolution - tmp_point.x;
+		point->y = cap->y_resolution - 1 - tmp_point.x;
 		break;
 	case DISPLAY_ORIENTATION_ROTATED_180:
-		point->x = cap->x_resolution - tmp_point.x;
-		point->y = cap->y_resolution - tmp_point.y;
+		point->x = cap->x_resolution - 1 - tmp_point.x;
+		point->y = cap->y_resolution - 1 - tmp_point.y;
 		break;
 	case DISPLAY_ORIENTATION_ROTATED_270:
-		point->x = cap->x_resolution - tmp_point.y;
+		point->x = cap->x_resolution - 1 - tmp_point.y;
 		point->y = tmp_point.x;
 		break;
 	default:
