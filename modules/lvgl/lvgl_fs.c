@@ -13,6 +13,7 @@
 
 static bool lvgl_fs_ready(lv_fs_drv_t *drv)
 {
+	ARG_UNUSED(drv);
 	return true;
 }
 
@@ -26,10 +27,10 @@ static lv_fs_res_t errno_to_lv_fs_res(int err)
 		return LV_FS_RES_HW_ERR;
 	case -EBADF:
 		/*Error in the file system structure */
-		return LV_FS_RES_FS_ERR;
+	return LV_FS_RES_FS_ERR;
 	case -ENOENT:
-		/*Driver, file or directory is not exists*/
-		return LV_FS_RES_NOT_EX;
+	/*Driver, file or directory does not exist*/
+	return LV_FS_RES_NOT_EX;
 	case -EFBIG:
 		/*Disk full*/
 		return LV_FS_RES_FULL;
@@ -56,16 +57,20 @@ static lv_fs_res_t errno_to_lv_fs_res(int err)
 static void *lvgl_fs_open(lv_fs_drv_t *drv, const char *path, lv_fs_mode_t mode)
 {
 	int err;
-	int zmode = FS_O_CREATE;
+	int zmode = 0;
 	void *file;
 
 	/* LVGL is passing absolute paths without the root slash add it back
-	 * by decrementing the path pointer.
-	 */
+	* by decrementing the path pointer.
+	*/
 	path--;
 
-	zmode |= (mode & LV_FS_MODE_WR) ? FS_O_WRITE : 0;
-	zmode |= (mode & LV_FS_MODE_RD) ? FS_O_READ : 0;
+	if (mode & LV_FS_MODE_WR) {
+	zmode |= FS_O_WRITE | FS_O_CREATE;
+	}
+	if (mode & LV_FS_MODE_RD) {
+	zmode |= FS_O_READ;
+	}
 
 	file = lv_malloc(sizeof(struct fs_file_t));
 	if (!file) {
