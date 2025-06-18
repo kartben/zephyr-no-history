@@ -44,10 +44,10 @@ lv_result_t lv_thread_delete(lv_thread_t *thread)
 
 	k_thread_abort(thread->tid);
 	ret = k_thread_stack_free(thread->stack);
-	if (ret < 0) {
-		LOG_ERR("Failled to delete thread: %d", ret);
-		return LV_RESULT_INVALID;
-	}
+       if (ret < 0) {
+	       LOG_ERR("Failed to delete thread: %d", ret);
+	       return LV_RESULT_INVALID;
+       }
 
 	return LV_RESULT_OK;
 }
