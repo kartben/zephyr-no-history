@@ -118,7 +118,7 @@ static int siwx91x_sg_fill_desc(RSI_UDMA_DESC_T *descs, const struct dma_config 
 	RSI_UDMA_CHA_CONFIG_DATA_T *cfg_91x;
 
 	for (int i = 0; i < config_zephyr->block_count; i++) {
-		sys_write32((uint32_t)&descs[i].vsUDMAChaConfigData1, (mem_addr_t)&cfg_91x);
+		cfg_91x = &descs[i].vsUDMAChaConfigData1;
 
 		if (siwx91x_addr_adjustment(block_addr->source_addr_adj) == UDMA_ADDR_INC_NONE) {
 			descs[i].pSrcEndAddr = (void *)block_addr->source_address;
