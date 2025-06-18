@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2023 Yonatan Schachter
- *
- * SPDX-License-Identifier: Apache-2.0
- */
+	* Copyright (c) 2023 Yonatan Schachter
+	*
+	* SPDX-License-Identifier: Apache-2.0
+	*/
 
 #include <zephyr/bindesc.h>
 #include <zephyr/sys/util.h>
@@ -18,24 +18,24 @@ struct find_user_data {
 };
 
 /**
- * A callback used by the bindesc_find_* functions.
- */
+	* A callback used by the bindesc_find_* functions.
+	*/
 static int find_callback(const struct bindesc_entry *entry, void *user_data)
 {
 	struct find_user_data *data = (struct find_user_data *)user_data;
 
 	if (data->tag == entry->tag) {
-		data->result = (const void *)&(entry->data);
-		data->size = entry->len;
-		return 1;
+	data->result = (const void *)&(entry->data);
+	data->size = entry->len;
+	return 1;
 	}
 
 	return 0;
 }
 
 /**
- * A callback used by the bindesc_get_size function.
- */
+	* A callback used by the bindesc_get_size function.
+	*/
 static int get_size_callback(const struct bindesc_entry *entry, void *user_data)
 {
 	size_t *result = (size_t *)user_data;
@@ -46,46 +46,46 @@ static int get_size_callback(const struct bindesc_entry *entry, void *user_data)
 }
 
 /**
- * This helper function is used to abstract the different methods of reading
- * data from the binary descriptors.
- * For RAM and memory mapped flash, the implementation is very simple, as both
- * are memory mapped and can simply return a pointer to the data.
- * Flash is more complex because it needs to read the data from flash, and do
- * error checking.
- */
+	* This helper function is used to abstract the different methods of reading
+	* data from the binary descriptors.
+	* For RAM and memory mapped flash, the implementation is very simple, as both
+	* are memory mapped and can simply return a pointer to the data.
+	* Flash is more complex because it needs to read the data from flash, and do
+	* error checking.
+	*/
 static inline int get_entry(struct bindesc_handle *handle, const uint8_t *address,
-			    const struct bindesc_entry **entry)
+	const struct bindesc_entry **entry)
 {
 	int retval = 0;
 	int flash_retval;
 
 	/* Check if reading from flash is enabled, if not, this if/else will be optimized out */
 	if (IS_ENABLED(CONFIG_BINDESC_READ_FLASH) && handle->type == BINDESC_HANDLE_TYPE_FLASH) {
-		flash_retval = flash_read(handle->flash_device, (size_t)address,
-					  handle->buffer, BINDESC_ENTRY_HEADER_SIZE);
-		if (flash_retval) {
-			LOG_ERR("Flash read error: %d", flash_retval);
-			return -EIO;
-		}
+	flash_retval = flash_read(handle->flash_device, (size_t)address,
+	handle->buffer, BINDESC_ENTRY_HEADER_SIZE);
+	if (flash_retval) {
+	LOG_ERR("Flash read error: %d", flash_retval);
+	return -EIO;
+	}
 
-		/* Make sure buffer is large enough for the data */
-		if (((const struct bindesc_entry *)handle->buffer)->len + BINDESC_ENTRY_HEADER_SIZE
-				> sizeof(handle->buffer)) {
-			LOG_WRN("Descriptor too large to copy, skipping");
-			retval = -ENOMEM;
-		} else {
-			flash_retval = flash_read(handle->flash_device,
-					(size_t)address + BINDESC_ENTRY_HEADER_SIZE,
-					handle->buffer + BINDESC_ENTRY_HEADER_SIZE,
-					((const struct bindesc_entry *)handle->buffer)->len);
-			if (flash_retval) {
-				LOG_ERR("Flash read error: %d", flash_retval);
-				return -EIO;
-			}
-		}
-		*entry = (const struct bindesc_entry *)handle->buffer;
+	/* Make sure buffer is large enough for the data */
+	if (((const struct bindesc_entry *)handle->buffer)->len + BINDESC_ENTRY_HEADER_SIZE
+	> sizeof(handle->buffer)) {
+	LOG_WRN("Descriptor too large to copy, skipping");
+	retval = -ENOMEM;
 	} else {
-		*entry = (const struct bindesc_entry *)address;
+	flash_retval = flash_read(handle->flash_device,
+	(size_t)address + BINDESC_ENTRY_HEADER_SIZE,
+	handle->buffer + BINDESC_ENTRY_HEADER_SIZE,
+	((const struct bindesc_entry *)handle->buffer)->len);
+	if (flash_retval) {
+	LOG_ERR("Flash read error: %d", flash_retval);
+	return -EIO;
+	}
+	}
+	*entry = (const struct bindesc_entry *)handle->buffer;
+	} else {
+	*entry = (const struct bindesc_entry *)address;
 	}
 
 	return retval;
@@ -97,8 +97,8 @@ int bindesc_open_memory_mapped_flash(struct bindesc_handle *handle, size_t offse
 	uint8_t *address = (uint8_t *)CONFIG_FLASH_BASE_ADDRESS + offset;
 
 	if (*(uint64_t *)address != BINDESC_MAGIC) {
-		LOG_ERR("Magic not found in given address");
-		return -ENOENT;
+	LOG_ERR("Magic not found in given address");
+	return -ENOENT;
 	}
 
 	handle->address = address;
@@ -112,13 +112,13 @@ int bindesc_open_memory_mapped_flash(struct bindesc_handle *handle, size_t offse
 int bindesc_open_ram(struct bindesc_handle *handle, const uint8_t *address, size_t max_size)
 {
 	if (!IS_ALIGNED(address, BINDESC_ALIGNMENT)) {
-		LOG_ERR("Given address is not aligned");
-		return -EINVAL;
+	LOG_ERR("Given address is not aligned");
+	return -EINVAL;
 	}
 
 	if (*(uint64_t *)address != BINDESC_MAGIC) {
-		LOG_ERR("Magic not found in given address");
-		return -ENONET;
+	LOG_ERR("Magic not found in given address");
+	return -ENOENT;
 	}
 
 	handle->address = address;
@@ -130,19 +130,24 @@ int bindesc_open_ram(struct bindesc_handle *handle, const uint8_t *address, size
 
 #if IS_ENABLED(CONFIG_BINDESC_READ_FLASH)
 int bindesc_open_flash(struct bindesc_handle *handle, size_t offset,
-		       const struct device *flash_device)
+	const struct device *flash_device)
 {
 	int retval;
 
+	if (!device_is_ready(flash_device)) {
+	LOG_ERR("Flash device not ready");
+	return -ENODEV;
+	}
+
 	retval = flash_read(flash_device, offset, handle->buffer, sizeof(BINDESC_MAGIC));
 	if (retval) {
-		LOG_ERR("Flash read error: %d", retval);
-		return -EIO;
+	LOG_ERR("Flash read error: %d", retval);
+	return -EIO;
 	}
 
 	if (*(uint64_t *)handle->buffer != BINDESC_MAGIC) {
-		LOG_ERR("Magic not found in given address");
-		return -ENOENT;
+	LOG_ERR("Magic not found in given address");
+	return -ENOENT;
 	}
 
 	handle->address = (uint8_t *)offset;
@@ -161,35 +166,53 @@ int bindesc_foreach(struct bindesc_handle *handle, bindesc_callback_t callback, 
 
 	address += sizeof(BINDESC_MAGIC);
 
-	do {
-		retval = get_entry(handle, address, &entry);
-		if (retval == -EIO) {
-			return -EIO;
-		}
-		address += WB_UP(BINDESC_ENTRY_HEADER_SIZE + entry->len);
-		if (retval) {
-			continue;
-		}
+	while (1) {
+	if ((address - handle->address) + BINDESC_ENTRY_HEADER_SIZE > handle->size_limit) {
+	LOG_ERR("Descriptor exceeds size limit");
+	return -E2BIG;
+	}
 
-		retval = callback(entry, user_data);
-		if (retval) {
-			return retval;
-		}
-	} while ((entry->tag != BINDESC_TAG_DESCRIPTORS_END) &&
-		((address - handle->address) <= handle->size_limit));
+	retval = get_entry(handle, address, &entry);
+	if (retval == -EIO) {
+	return -EIO;
+	}
+	if (entry->len + BINDESC_ENTRY_HEADER_SIZE >
+		handle->size_limit - (address - handle->address)) {
+	LOG_ERR("Descriptor exceeds size limit");
+	return -E2BIG;
+	}
+
+	address += WB_UP(BINDESC_ENTRY_HEADER_SIZE + entry->len);
+	if (!retval) {
+	retval = callback(entry, user_data);
+	if (retval) {
+	return retval;
+	}
+	}
+
+	if (entry->tag == BINDESC_TAG_DESCRIPTORS_END ||
+		(address - handle->address) > handle->size_limit) {
+	break;
+	}
+	}
 
 	return 0;
-}
+	}
 
 int bindesc_find_str(struct bindesc_handle *handle, uint16_t id, const char **result)
 {
-	struct find_user_data data = {
+		struct find_user_data data = {
 		.tag = BINDESC_TAG(STR, id),
-	};
+		};
+		int retval;
 
-	if (!bindesc_foreach(handle, find_callback, &data)) {
-		LOG_WRN("The requested descriptor was not found");
-		return -ENOENT;
+	retval = bindesc_foreach(handle, find_callback, &data);
+	if (retval < 0) {
+	return retval;
+	}
+	if (retval == 0) {
+	LOG_WRN("The requested descriptor was not found");
+	return -ENOENT;
 	}
 	*result = (char *)data.result;
 	return 0;
@@ -198,27 +221,37 @@ int bindesc_find_str(struct bindesc_handle *handle, uint16_t id, const char **re
 int bindesc_find_uint(struct bindesc_handle *handle, uint16_t id, const uint32_t **result)
 {
 	struct find_user_data data = {
-		.tag = BINDESC_TAG(UINT, id),
+	.tag = BINDESC_TAG(UINT, id),
 	};
+	int retval;
 
-	if (!bindesc_foreach(handle, find_callback, &data)) {
-		LOG_WRN("The requested descriptor was not found");
-		return -ENOENT;
+	retval = bindesc_foreach(handle, find_callback, &data);
+	if (retval < 0) {
+	return retval;
+	}
+	if (retval == 0) {
+	LOG_WRN("The requested descriptor was not found");
+	return -ENOENT;
 	}
 	*result = (const uint32_t *)data.result;
 	return 0;
 }
 
 int bindesc_find_bytes(struct bindesc_handle *handle, uint16_t id, const uint8_t **result,
-		       size_t *result_size)
+	size_t *result_size)
 {
 	struct find_user_data data = {
-		.tag = BINDESC_TAG(BYTES, id),
+	.tag = BINDESC_TAG(BYTES, id),
 	};
+	int retval;
 
-	if (!bindesc_foreach(handle, find_callback, &data)) {
-		LOG_WRN("The requested descriptor was not found");
-		return -ENOENT;
+	retval = bindesc_foreach(handle, find_callback, &data);
+	if (retval < 0) {
+	return retval;
+	}
+	if (retval == 0) {
+	LOG_WRN("The requested descriptor was not found");
+	return -ENOENT;
 	}
 	*result = (const uint8_t *)data.result;
 	*result_size = data.size;
