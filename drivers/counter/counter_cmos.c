@@ -56,7 +56,7 @@ struct state {
  * the members of 'struct state'.
  */
 
-const uint8_t addrs[] = { 0, 2, 4, 7, 8, 9, 10, 11 };
+static const uint8_t addrs[] = { 0, 2, 4, 7, 8, 9, 10, 11 };
 
 /*
  * Interesting bits in 'struct state'.

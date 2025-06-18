@@ -45,8 +45,8 @@ static const struct can_shell_mode_mapping can_shell_mode_map[] = {
 };
 
 K_MSGQ_DEFINE(can_shell_tx_msgq, sizeof(struct can_shell_tx_event),
-	      CONFIG_CAN_SHELL_TX_QUEUE_SIZE, 4);
-const struct shell *can_shell_tx_msgq_sh;
+             CONFIG_CAN_SHELL_TX_QUEUE_SIZE, 4);
+static const struct shell *can_shell_tx_msgq_sh;
 static struct k_work_poll can_shell_tx_msgq_work;
 static struct k_poll_event can_shell_tx_msgq_events[] = {
 	K_POLL_EVENT_STATIC_INITIALIZER(K_POLL_TYPE_MSGQ_DATA_AVAILABLE,
@@ -55,8 +55,8 @@ static struct k_poll_event can_shell_tx_msgq_events[] = {
 };
 
 K_MSGQ_DEFINE(can_shell_rx_msgq, sizeof(struct can_shell_rx_event),
-	      CONFIG_CAN_SHELL_RX_QUEUE_SIZE, 4);
-const struct shell *can_shell_rx_msgq_sh;
+             CONFIG_CAN_SHELL_RX_QUEUE_SIZE, 4);
+static const struct shell *can_shell_rx_msgq_sh;
 static struct k_work_poll can_shell_rx_msgq_work;
 static struct k_poll_event can_shell_rx_msgq_events[] = {
 	K_POLL_EVENT_STATIC_INITIALIZER(K_POLL_TYPE_MSGQ_DATA_AVAILABLE,

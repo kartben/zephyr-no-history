@@ -17,7 +17,7 @@ LOG_MODULE_DECLARE(i3c, CONFIG_I3C_LOG_LEVEL);
 	{                                                                                          \
 		.name = "unknown-" STRINGIFY(i)                                                    \
 	}
-const struct device dummy_devs[] = {
+static const struct device dummy_devs[] = {
 	LISTIFY(CONFIG_I3C_NUM_OF_DESC_MEM_SLABS, UNKNOWN_NAME_STR, (,)) };
 
 K_MEM_SLAB_DEFINE(i3c_device_desc_pool, sizeof(struct i3c_device_desc),

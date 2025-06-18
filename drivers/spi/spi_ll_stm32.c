@@ -606,7 +606,7 @@ static int spi_stm32_configure(const struct device *dev,
 {
 	const struct spi_stm32_config *cfg = dev->config;
 	struct spi_stm32_data *data = dev->data;
-	const uint32_t scaler[] = {
+       static const uint32_t scaler[] = {
 		LL_SPI_BAUDRATEPRESCALER_DIV2,
 		LL_SPI_BAUDRATEPRESCALER_DIV4,
 		LL_SPI_BAUDRATEPRESCALER_DIV8,

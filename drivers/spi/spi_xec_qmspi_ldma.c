@@ -238,7 +238,7 @@ static int qmspi_set_frequency(struct spi_qmspi_data *qdata, struct qmspi_regs *
  * set CHPA_MISO=0 for SPI Mode 3 at all frequencies.
  */
 
-const uint8_t smode_tbl[4] = {
+static const uint8_t smode_tbl[4] = {
 	0x00u, 0x06u, 0x01u,
 #ifdef XEC_QMSPI_SPI_MODE_3_ANOMALY
 	0x03u, /* CPOL=1, CPHA_MOSI=1, CPHA_MISO=0 */
@@ -247,7 +247,7 @@ const uint8_t smode_tbl[4] = {
 #endif
 };
 
-const uint8_t smode48_tbl[4] = {
+static const uint8_t smode48_tbl[4] = {
 	0x04u, 0x02u, 0x05u, 0x03u
 };
 

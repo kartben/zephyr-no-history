@@ -59,7 +59,8 @@ struct udc_rpi_ep_state {
 		    ((void *)PINCTRL_DT_INST_DEV_CONFIG_GET(n)), (NULL))
 
 USB_RPI_PICO_PINCTRL_DT_INST_DEFINE(0);
-const struct pinctrl_dev_config *pcfg = USB_RPI_PICO_PINCTRL_DT_INST_DEV_CONFIG_GET(0);
+static const struct pinctrl_dev_config *pcfg =
+	USB_RPI_PICO_PINCTRL_DT_INST_DEV_CONFIG_GET(0);
 
 #define USBD_THREAD_STACK_SIZE 1024
 

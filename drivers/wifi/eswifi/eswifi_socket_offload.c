@@ -747,7 +747,7 @@ static void eswifi_off_freeaddrinfo(struct zsock_addrinfo *res)
 	free(res);
 }
 
-const struct socket_dns_offload eswifi_dns_ops = {
+static const struct socket_dns_offload eswifi_dns_ops = {
 	.getaddrinfo = eswifi_off_getaddrinfo,
 	.freeaddrinfo = eswifi_off_freeaddrinfo,
 };
