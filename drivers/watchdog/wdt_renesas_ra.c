@@ -30,13 +30,13 @@ struct wdt_renesas_ra_data {
 #define WDT_RENESAS_RA_ATOMIC_TIMEOUT_SET (1)
 
 /* Lookup table for WDT period raw cycle */
-const float timeout_period_lut[] = {
+static const float timeout_period_lut[] = {
 	[WDT_TIMEOUT_128] = 128,    [WDT_TIMEOUT_512] = 512,   [WDT_TIMEOUT_1024] = 1024,
 	[WDT_TIMEOUT_2048] = 2048,  [WDT_TIMEOUT_4096] = 4096, [WDT_TIMEOUT_8192] = 8192,
 	[WDT_TIMEOUT_16384] = 16384};
 
 /* Lookup table for the division value of the input clock count */
-const float clock_div_lut[] = {[WDT_CLOCK_DIVISION_1] = 1,       [WDT_CLOCK_DIVISION_4] = 4,
+static const float clock_div_lut[] = {[WDT_CLOCK_DIVISION_1] = 1,       [WDT_CLOCK_DIVISION_4] = 4,
 			       [WDT_CLOCK_DIVISION_16] = 16,     [WDT_CLOCK_DIVISION_32] = 32,
 			       [WDT_CLOCK_DIVISION_64] = 64,     [WDT_CLOCK_DIVISION_128] = 128,
 			       [WDT_CLOCK_DIVISION_256] = 256,   [WDT_CLOCK_DIVISION_512] = 512,
@@ -45,13 +45,13 @@ const float clock_div_lut[] = {[WDT_CLOCK_DIVISION_1] = 1,       [WDT_CLOCK_DIVI
 #define WDT_WINDOW_INVALID (-1)
 
 /* Lookup table for the window start position setting */
-const int window_start_lut[] = {
+static const int window_start_lut[] = {
 	[0] = WDT_WINDOW_START_100, [1] = WDT_WINDOW_START_75, [2] = WDT_WINDOW_START_50,
 	[3] = WDT_WINDOW_START_25,  [4] = WDT_WINDOW_INVALID,
 };
 
 /* Lookup table for the window end position setting */
-const int window_end_lut[] = {
+static const int window_end_lut[] = {
 	[0] = WDT_WINDOW_INVALID, [1] = WDT_WINDOW_END_75, [2] = WDT_WINDOW_END_50,
 	[3] = WDT_WINDOW_END_25,  [4] = WDT_WINDOW_END_0,
 };

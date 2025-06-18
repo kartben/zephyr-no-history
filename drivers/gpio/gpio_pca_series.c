@@ -56,7 +56,7 @@ enum gpio_pca_series_part_no {
  *
  * @note must be consistent in order with @ref enum gpio_pca_series_part_no
  */
-const char *const gpio_pca_series_part_name[] = {
+static const char *const gpio_pca_series_part_name[] = {
 	"pca9538",
 	"pca9539",
 	"pca9554",
@@ -103,7 +103,7 @@ enum gpio_pca_series_reg_type {			/** Type0 Type1 Type2 Type3 */
  *     port-level "pin output configuration" register.
  */
 
-const char *const gpio_pca_series_reg_name[] = {
+static const char *const gpio_pca_series_reg_name[] = {
 	"1b_input_port",
 	"1b_output_port",
 /*  "1b_polarity_inversion," */

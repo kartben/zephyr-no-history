@@ -1118,7 +1118,7 @@ static uint8_t gc2145_check_connection(const struct device *dev)
 #define GC2145_640_480_LINK_FREQ_ID	0
 #define GC2145_1600_1200_LINK_FREQ	240000000
 #define GC2145_1600_1200_LINK_FREQ_ID	1
-const int64_t gc2145_link_frequency[] = {
+static const int64_t gc2145_link_frequency[] = {
 	GC2145_640_480_LINK_FREQ, GC2145_1600_1200_LINK_FREQ,
 };
 static int gc2145_config_csi(const struct device *dev, uint32_t pixelformat,

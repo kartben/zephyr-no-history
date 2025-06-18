@@ -42,7 +42,7 @@ struct mipi_csi2rx_tHsSettleEscClk_config {
 };
 
 /* Must be in pixel rate ascending order */
-const struct mipi_csi2rx_tHsSettleEscClk_config tHsSettleEscClk_configs[] = {
+static const struct mipi_csi2rx_tHsSettleEscClk_config tHsSettleEscClk_configs[] = {
 	{MHZ(24), 0x24},
 	{MHZ(48), 0x12},
 	{MHZ(96), 0x09},

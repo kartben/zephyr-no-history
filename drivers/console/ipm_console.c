@@ -14,7 +14,7 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(ipm_console, CONFIG_IPM_LOG_LEVEL);
 
-const struct device *ipm_dev;
+static const struct device *ipm_dev;
 
 static int console_out(int c)
 {

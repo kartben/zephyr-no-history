@@ -356,7 +356,7 @@ static int npcm_clock_control_init(const struct device *dev)
 	return 0;
 }
 
-const struct npcm_pcc_config pcc_config = {
+static const struct npcm_pcc_config pcc_config = {
 	.base_cdcg = DT_INST_REG_ADDR_BY_NAME(0, cdcg),
 	.base_pmc = DT_INST_REG_ADDR_BY_NAME(0, pmc),
 };

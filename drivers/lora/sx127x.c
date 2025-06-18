@@ -522,7 +522,7 @@ uint32_t SX127xGetDio1PinState(void)
 }
 
 /* Initialize Radio driver callbacks */
-const struct Radio_s Radio = {
+static const struct Radio_s Radio = {
 	.Init = SX127xInit,
 	.GetStatus = SX127xGetStatus,
 	.SetModem = SX127xSetModem,

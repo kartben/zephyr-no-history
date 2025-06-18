@@ -26,7 +26,7 @@ LOG_MODULE_REGISTER(nxp_imx_eth);
 #define NETC_HAS_NO_SWITCH_TAG_SUPPORT 1
 #endif
 
-const struct device *netc_dev_list[NETC_DRV_MAX_INST_SUPPORT];
+static const struct device *netc_dev_list[NETC_DRV_MAX_INST_SUPPORT];
 
 static int netc_eth_rx(const struct device *dev)
 {
