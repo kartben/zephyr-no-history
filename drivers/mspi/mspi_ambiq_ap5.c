@@ -1978,7 +1978,7 @@ static DEVICE_API(mspi, mspi_ambiq_driver_api) = {
 	}                                                                                        \
 	static uint32_t mspi_ambiq_cmdq##n[DT_INST_PROP_OR(n, cmdq_buffer_size, 1024)]           \
 	__attribute__((section(DT_INST_PROP_OR(n, cmdq_buffer_location, ".nocache"))));          \
-	static struct gpio_dt_spec ce_gpios##n[] = MSPI_CE_GPIOS_DT_SPEC_INST_GET(n);            \
+	static const struct gpio_dt_spec ce_gpios##n[] = MSPI_CE_GPIOS_DT_SPEC_INST_GET(n);            \
 	static struct mspi_ambiq_data mspi_ambiq_data##n = {                                     \
 		.mspiHandle            = NULL,                                                   \
 		.hal_cfg               = MSPI_HAL_CONFIG(n, mspi_ambiq_cmdq##n,                  \

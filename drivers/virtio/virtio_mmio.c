@@ -310,7 +310,7 @@ static int virtio_mmio_init_common(const struct device *dev)
 
 #define VIRTIO_MMIO_DEFINE(inst)                                                                   \
 	static struct virtio_mmio_data virtio_mmio_data##inst;                                     \
-	static struct virtio_mmio_config virtio_mmio_config##inst = {                              \
+	static const struct virtio_mmio_config virtio_mmio_config##inst = {                              \
 		DEVICE_MMIO_NAMED_ROM_INIT(reg_base, DT_DRV_INST(inst)),                           \
 	};                                                                                         \
 	static int virtio_mmio_init##inst(const struct device *dev)                                \

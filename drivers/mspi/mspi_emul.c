@@ -879,7 +879,7 @@ static struct emul_mspi_driver_api emul_mspi_driver_api = {
 		.children = emuls_##n,                                                            \
 		.num_children = ARRAY_SIZE(emuls_##n),                                            \
 	};                                                                                        \
-	static struct gpio_dt_spec ce_gpios##n[] = MSPI_CE_GPIOS_DT_SPEC_INST_GET(n);             \
+	static const struct gpio_dt_spec ce_gpios##n[] = MSPI_CE_GPIOS_DT_SPEC_INST_GET(n);             \
 	static struct mspi_emul_data mspi_emul_data_##n = {                                       \
 		.mspicfg               = MSPI_CONFIG(n),                                          \
 		.mspicfg.ce_group      = (struct gpio_dt_spec *)ce_gpios##n,                      \

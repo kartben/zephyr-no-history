@@ -322,7 +322,7 @@ static DEVICE_API(i2c, i2c_emul_api) = {
 	static const struct i2c_dt_spec emul_forward_list_##n[] = {                                \
 		COND_CODE_1(DT_INST_NODE_HAS_PROP(n, forwards),                                    \
 			    (DT_INST_FOREACH_PROP_ELEM(n, forwards, EMUL_FORWARD_ITEM)), ())};     \
-	static struct i2c_emul_config i2c_emul_cfg_##n = {                                         \
+	static const struct i2c_emul_config i2c_emul_cfg_##n = {                                         \
 		.emul_list =                                                                       \
 			{                                                                          \
 				.children = emuls_##n,                                             \

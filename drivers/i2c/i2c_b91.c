@@ -165,7 +165,7 @@ BUILD_ASSERT(DT_NUM_INST_STATUS_OKAY(DT_DRV_COMPAT) <= 1,
 								      \
 	static struct i2c_b91_data i2c_b91_data_##inst;		      \
 								      \
-	static struct i2c_b91_cfg i2c_b91_cfg_##inst = {	      \
+	static const struct i2c_b91_cfg i2c_b91_cfg_##inst = {	      \
 		.bitrate = DT_INST_PROP(inst, clock_frequency),	      \
 		.pcfg = PINCTRL_DT_INST_DEV_CONFIG_GET(inst),	      \
 	};							      \
