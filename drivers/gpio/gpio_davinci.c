@@ -61,7 +61,7 @@ struct gpio_davinci_config {
 	const struct pinctrl_dev_config *pcfg;
 };
 
-const unsigned int offset_array[5] = {0x10, 0x38, 0x60, 0x88, 0xb0};
+static const unsigned int offset_array[5] = {0x10, 0x38, 0x60, 0x88, 0xb0};
 #define MAX_REGS_BANK ARRAY_SIZE(offset_array)
 
 #define BANK0 0

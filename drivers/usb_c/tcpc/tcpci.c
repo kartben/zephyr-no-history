@@ -16,7 +16,7 @@ LOG_MODULE_REGISTER(tcpci, CONFIG_USBC_LOG_LEVEL);
 
 #define LOG_COMM_ERR_STR "Can't communicate with TCPC %s@%x (%s %x = %04x)"
 
-const struct tcpci_reg_dump_map tcpci_std_regs[TCPCI_STD_REGS_SIZE] = {
+static const struct tcpci_reg_dump_map tcpci_std_regs[TCPCI_STD_REGS_SIZE] = {
 	{
 		.addr = TCPC_REG_VENDOR_ID,
 		.name = "VENDOR_ID",

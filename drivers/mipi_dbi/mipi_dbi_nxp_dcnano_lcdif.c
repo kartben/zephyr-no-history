@@ -37,7 +37,7 @@ struct mcux_dcnano_lcdif_dbi_foramt_map_t {
 	lcdif_dbi_out_format_t format;
 };
 
-const struct mcux_dcnano_lcdif_dbi_foramt_map_t format_map[] = {
+static const struct mcux_dcnano_lcdif_dbi_foramt_map_t format_map[] = {
 	{MIPI_DBI_MODE_6800_BUS_8_BIT, MIPI_DBI_MODE_RGB332, kLCDIF_DbiOutD8RGB332},
 	{MIPI_DBI_MODE_6800_BUS_8_BIT, MIPI_DBI_MODE_RGB444, kLCDIF_DbiOutD8RGB444},
 	{MIPI_DBI_MODE_6800_BUS_8_BIT, MIPI_DBI_MODE_RGB565, kLCDIF_DbiOutD8RGB565},

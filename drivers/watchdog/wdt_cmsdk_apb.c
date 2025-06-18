@@ -63,7 +63,7 @@ struct wdog_cmsdk_apb {
 	((volatile struct wdog_cmsdk_apb *)(DT_INST_REG_ADDR(0)))
 
 /* Keep reference of the device to pass it to the callback */
-const struct device *wdog_r;
+static const struct device *wdog_r;
 
 /* watchdog reload value in clock cycles */
 static unsigned int reload_cycles = CMSDK_APB_WDOG_RELOAD;
