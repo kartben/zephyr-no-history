@@ -148,7 +148,7 @@ struct hash_alg_to_rom {
 	enum mchp_rom_hash_alg_id rom_algo;
 };
 
-const struct hash_alg_to_rom hash_alg_tbl[] = {
+static const struct hash_alg_to_rom hash_alg_tbl[] = {
 	{ CRYPTO_HASH_ALGO_SHA224, MCHP_ROM_HASH_ALG_SHA224 },
 	{ CRYPTO_HASH_ALGO_SHA256, MCHP_ROM_HASH_ALG_SHA256 },
 	{ CRYPTO_HASH_ALGO_SHA384, MCHP_ROM_HASH_ALG_SHA384 },

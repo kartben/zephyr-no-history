@@ -340,7 +340,7 @@ static DEVICE_API(crypto, rts5912_hash_funcs) = {
 	.query_hw_caps = rts5912_query_hw_caps,
 };
 
-const struct rts5912_sha_config cfg_0 = {
+static const struct rts5912_sha_config cfg_0 = {
 	.cfg_sha2_regs = (volatile struct sha2_type *)DT_INST_REG_ADDR_BY_NAME(0, sha2),
 	.cfg_sha2dma_regs = (volatile struct sha2dma_type *)DT_INST_REG_ADDR_BY_NAME(0, sha2dma),
 };

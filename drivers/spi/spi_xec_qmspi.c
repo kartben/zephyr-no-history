@@ -112,11 +112,11 @@ static void qmspi_set_frequency(QMSPI_Type *regs, uint32_t freq_hz)
  *  Mode 3: CPOL=1 CHPA=1 (CHPA_MISO=0 and CHPA_MOSI=1)
  */
 
-const uint8_t smode_tbl[4] = {
+static const uint8_t smode_tbl[4] = {
 	0x00u, 0x06u, 0x01u, 0x07u
 };
 
-const uint8_t smode48_tbl[4] = {
+static const uint8_t smode48_tbl[4] = {
 	0x04u, 0x02u, 0x05u, 0x03u
 };
 

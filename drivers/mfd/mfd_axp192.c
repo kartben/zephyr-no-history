@@ -118,7 +118,7 @@ struct mfd_axp192_func_reg_desc {
 	uint8_t mask;
 };
 
-const struct mfd_axp192_func_reg_desc gpio_reg_desc[AXP192_GPIO_MAX_NUM] = {
+static const struct mfd_axp192_func_reg_desc gpio_reg_desc[AXP192_GPIO_MAX_NUM] = {
 	{
 		/* GPIO0 */
 		.reg = AXP192_GPIO0_FUNC_REG,
