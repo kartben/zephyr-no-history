@@ -30,6 +30,11 @@ LOG_MODULE_REGISTER(adc_ra, CONFIG_ADC_LOG_LEVEL);
 
 void adc_scan_end_isr(void);
 
+__weak void adc_scan_end_isr(void)
+{
+       /* User can override this handler */
+}
+
 /**
  * @brief RA ADC config
  *
@@ -209,9 +214,9 @@ static int adc_ra_start_read(const struct device *dev, const struct adc_sequence
 	data->buf = sequence->buffer;
 	adc_context_start_read(&data->ctx, sequence);
 
-	adc_context_wait_for_completion(&data->ctx);
+	err = adc_context_wait_for_completion(&data->ctx);
 
-	return 0;
+	return err;
 }
 
 /**
