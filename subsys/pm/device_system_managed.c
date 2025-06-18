@@ -33,7 +33,8 @@ bool pm_suspend_devices(void)
 
 	num_susp = 0;
 
-	for (const struct device *dev = devs + devc - 1; dev >= devs; dev--) {
+	for (size_t i = devc; i-- > 0;) {
+		const struct device *dev = &devs[i];
 		int ret;
 
 		/*
@@ -67,9 +68,9 @@ bool pm_suspend_devices(void)
 
 void pm_resume_devices(void)
 {
-	for (int i = (num_susp - 1); i >= 0; i--) {
+	for (size_t i = num_susp; i-- > 0;) {
 		pm_device_action_run(TYPE_SECTION_START(pm_device_slots)[i],
-				    PM_DEVICE_ACTION_RESUME);
+	PM_DEVICE_ACTION_RESUME);
 	}
 
 	num_susp = 0;

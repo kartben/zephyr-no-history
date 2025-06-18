@@ -45,7 +45,7 @@ static int pm_cmd_suspend(const struct shell *sh, size_t argc, char *argv[])
 
 	ret = pm_device_action_run(dev, PM_DEVICE_ACTION_SUSPEND);
 	if (ret < 0) {
-		shell_error(sh, "Device %s error: %d", "suspend", ret);
+		shell_error(sh, "Device %s error: %d", dev->name, ret);
 		return ret;
 	}
 
@@ -71,7 +71,7 @@ static int pm_cmd_resume(const struct shell *sh, size_t argc, char *argv[])
 
 	ret = pm_device_action_run(dev, PM_DEVICE_ACTION_RESUME);
 	if (ret < 0) {
-		shell_error(sh, "Device %s error: %d", "resume", ret);
+		shell_error(sh, "Device %s error: %d", dev->name, ret);
 		return ret;
 	}
 
@@ -97,7 +97,7 @@ static int pm_cmd_runtime_get(const struct shell *sh, size_t argc, char *argv[])
 
 	ret = pm_device_runtime_get(dev);
 	if (ret < 0) {
-		shell_error(sh, "Device %s error: %d", "runtime get", ret);
+		shell_error(sh, "Device %s error: %d", dev->name, ret);
 		return ret;
 	}
 
@@ -122,7 +122,7 @@ static int pm_cmd_runtime_put(const struct shell *sh, size_t argc, char *argv[])
 
 	ret = pm_device_runtime_put(dev);
 	if (ret < 0) {
-		shell_error(sh, "Device %s error: %d", "runtime put", ret);
+		shell_error(sh, "Device %s error: %d", dev->name, ret);
 		return ret;
 	}
 
@@ -147,7 +147,7 @@ static int pm_cmd_runtime_put_async(const struct shell *sh, size_t argc, char *a
 
 	ret = pm_device_runtime_put_async(dev, K_NO_WAIT);
 	if (ret < 0) {
-		shell_error(sh, "Device %s error: %d", "runtime put async", ret);
+		shell_error(sh, "Device %s error: %d", dev->name, ret);
 		return ret;
 	}
 
