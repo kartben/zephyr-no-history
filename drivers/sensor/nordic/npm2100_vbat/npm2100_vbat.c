@@ -185,8 +185,7 @@ int npm2100_vbat_channel_get(const struct device *dev, enum sensor_channel chan,
 
 	int32_t tmp = scaling_off + ((int32_t)*result * scaling_mul) / scaling_div;
 
-	valp->val1 = tmp / 1000000;
-	valp->val2 = tmp % 1000000;
+	sensor_value_from_micro(valp, tmp);
 
 	return 0;
 }
@@ -244,7 +243,7 @@ int npm2100_vbat_sample_fetch(const struct device *dev, enum sensor_channel chan
 		}
 	}
 
-	/* Fetch previous DPS duration result before triggering new one.The time it takes to get
+	/* Fetch previous DPS duration result before triggering new one. The time it takes to get
 	 * the DPS duration depends on many factors and cannot be predicted here.
 	 */
 	ret = i2c_reg_read_byte_dt(&config->i2c, BOOST_DPSDUR, &data->dpsdur);
