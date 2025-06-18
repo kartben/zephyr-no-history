@@ -87,8 +87,7 @@ static int temp_nrf5_channel_get(const struct device *dev,
 	}
 
 	uval = data->sample * TEMP_NRF5_TEMP_SCALE;
-	val->val1 = uval / 1000000;
-	val->val2 = uval % 1000000;
+	sensor_value_from_micro(val, uval);
 
 	LOG_DBG("Temperature:%d,%d", val->val1, val->val2);
 

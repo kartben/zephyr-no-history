@@ -106,12 +106,9 @@ static int qdec_nrfx_channel_get(const struct device *dev,
 	acc = data->fetched_acc;
 	irq_unlock(key);
 
-	val->val1 = (acc * FULL_ANGLE) / config->steps;
-	val->val2 = (acc * FULL_ANGLE) - (val->val1 * config->steps);
-	if (val->val2 != 0) {
-		val->val2 *= 1000000;
-		val->val2 /= config->steps;
-	}
+	int64_t angle = (int64_t)acc * FULL_ANGLE * 1000000 / config->steps;
+
+	sensor_value_from_micro(val, angle);
 
 	return 0;
 }
@@ -225,7 +222,6 @@ static int qdec_nrfx_pm_action(const struct device *dev, enum pm_device_action a
 		break;
 	default:
 		return -ENOTSUP;
-		break;
 	}
 
 	return 0;
