@@ -142,11 +142,10 @@ static void a01nyub_uart_isr(const struct device *uart_dev, void *user_data)
 		 * If we do not read A01NYUB_HEADER on what we think is the
 		 * first byte, then reset the number of bytes read until we do
 		 */
-		if ((data->rd_data[0] != A01NYUB_HEADER) & (data->xfer_bytes == 1)) {
+		if ((data->rd_data[0] != A01NYUB_HEADER) && (data->xfer_bytes == 1)) {
 			LOG_DBG("First byte not header! Resetting # of bytes read.");
 			data->xfer_bytes = 0;
 		}
-
 		if (data->xfer_bytes == A01NYUB_BUF_LEN) {
 			LOG_DBG("Read (0x%x,0x%x,0x%x,0x%x)",
 				data->rd_data[0],
