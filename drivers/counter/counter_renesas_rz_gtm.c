@@ -411,7 +411,7 @@ static int counter_rz_gtm_set_top_value(const struct device *dev,
 	}
 	/* timer already in interval mode - only change top value */
 	data->fsp_cfg->period_counts = data->top_val;
-	cfg->fsp_api->periodSet(&data->fsp_ctrl, data->fsp_cfg->period_counts);
+	cfg->fsp_api->periodSet(data->fsp_ctrl, data->fsp_cfg->period_counts);
 
 	/* check if counter reset is required */
 	if (top_cfg->flags & COUNTER_TOP_CFG_DONT_RESET) {
