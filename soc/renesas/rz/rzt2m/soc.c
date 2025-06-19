@@ -21,7 +21,7 @@ void soc_reset_hook(void)
 {
 	/* Enable peripheral port access at EL1 and EL0 */
 	__asm__ volatile("mrc p15, 0, r0, c15, c0, 0\n");
-	__asm__ volatile("orr r0, #1\n");
+__asm__ volatile("orr r0, r0, #1\n");
 	__asm__ volatile("mcr p15, 0, r0, c15, c0, 0\n");
 	barrier_dsync_fence_full();
 	barrier_isync_fence_full();
