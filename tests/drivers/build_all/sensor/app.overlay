@@ -163,21 +163,26 @@
 			#include "uart.dtsi"
 		};
 
-		test_w1: w1@66660000 {
-			compatible = "vnd,w1";
-			reg = <0x66660000 0x1000>;
-			#address-cells = <1>;
-			#size-cells = <0>;
-			status = "okay";
+                test_w1: w1@66660000 {
+                        compatible = "vnd,w1";
+                        reg = <0x66660000 0x1000>;
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        status = "okay";
 
-			#include "w1.dtsi"
+                        #include "w1.dtsi"
+                };
+
+		test_xmc4xxx_temp: xmc4xxx_temp {
+			compatible = "infineon,xmc4xxx-temp";
+			status = "okay";
 		};
 
-		test_i3c: i3c@f0cacc1a {
-			#address-cells = <3>;
-			#size-cells = <0>;
-			compatible = "vnd,i3c";
-			reg = <0xf0cacc1a 0x1000>;
+                test_i3c: i3c@f0cacc1a {
+                        #address-cells = <3>;
+                        #size-cells = <0>;
+                        compatible = "vnd,i3c";
+                        reg = <0xf0cacc1a 0x1000>;
 			status = "okay";
 
 			#include "i3c.dtsi"

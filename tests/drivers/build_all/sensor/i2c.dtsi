@@ -1328,6 +1328,16 @@ test_i2c_bh1790: bh1790@b3 {
 };
 
 test_i2c_bh1730: bh1730@b4 {
-	compatible = "rohm,bh1730";
-	reg = <0xb4>;
+        compatible = "rohm,bh1730";
+        reg = <0xb4>;
 };
+
+test_i2c_icm40627: icm40627@b5 {
+	compatible = "invensense,icm40627";
+	reg = <0xb5>;
+	int-gpios = <&test_gpio 0 0>;
+	accel-hz = <100>;
+	gyro-hz = <100>;
+	accel-fs = <4>;
+	gyro-fs = <250>;
+	};

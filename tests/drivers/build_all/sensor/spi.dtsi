@@ -433,11 +433,23 @@ test_spi_icp201xx: icp201xx@34 {
 };
 
 test_spi_ad2s1210: ad2s1210@35 {
-	compatible = "adi,ad2s1210";
-	reg = <0x35>;
-	spi-max-frequency = <0>;
-	sample-gpios = <&test_gpio 0 (GPIO_ACTIVE_LOW)>;
-	mode-gpios = <&test_gpio 1 (GPIO_ACTIVE_HIGH)>, <&test_gpio 2 (GPIO_ACTIVE_HIGH)>;
-	reset-gpios = <&test_gpio 7 (GPIO_ACTIVE_LOW)>;
-	clock-frequency = <8192000>;
+        compatible = "adi,ad2s1210";
+        reg = <0x35>;
+        spi-max-frequency = <0>;
+        sample-gpios = <&test_gpio 0 (GPIO_ACTIVE_LOW)>;
+        mode-gpios = <&test_gpio 1 (GPIO_ACTIVE_HIGH)>, <&test_gpio 2 (GPIO_ACTIVE_HIGH)>;
+        reset-gpios = <&test_gpio 7 (GPIO_ACTIVE_LOW)>;
+        clock-frequency = <8192000>;
 };
+
+test_spi_afbr_s50: afbr_s50@36 {
+	compatible = "brcm,afbr-s50";
+	reg = <0x36>;
+	spi-max-frequency = <0>;
+	int-gpios = <&test_gpio 0 0>;
+	spi-mosi-gpios = <&test_gpio 0 0>;
+	spi-sck-gpios = <&test_gpio 0 0>;
+	spi-miso-gpios = <&test_gpio 0 0>;
+	measurement-mode = <1>;
+	dual-freq-mode = <0>;
+	};
