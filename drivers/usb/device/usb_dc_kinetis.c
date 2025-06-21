@@ -1,10 +1,10 @@
 /* usb_dc_kinetis.c - Kinetis USBFSOTG usb device driver */
 
-/*
- * Copyright (c) 2017 PHYTEC Messtechnik GmbH
- *
- * SPDX-License-Identifier: Apache-2.0
- */
+		/*
+		 * Copyright (c) 2017 PHYTEC Messtechnik GmbH
+		 *
+		 * SPDX-License-Identifier: Apache-2.0
+		 */
 
 #define DT_DRV_COMPAT nxp_kinetis_usbd
 
@@ -40,18 +40,18 @@ LOG_MODULE_REGISTER(usb_dc_kinetis);
 #define KINETIS_EP_NUMOF_MASK	0xf
 #define KINETIS_ADDR2IDX(addr)	((addr) & (KINETIS_EP_NUMOF_MASK))
 
-/*
- * In some SoC USB0 base register is defined as USBFS0
- */
+		/*
+		 * In some SoC USB0 base register is defined as USBFS0
+		 */
 #if !defined(USB0) && defined(USBFS0)
 #define USB0				USBFS0
 #endif
 
 /*
- * Buffer Descriptor (BD) entry provides endpoint buffer control
- * information for USBFS controller. Every endpoint direction requires
- * two BD entries.
- */
+		 * Buffer Descriptor (BD) entry provides endpoint buffer control
+		 * information for USBFS controller. Every endpoint direction requires
+		 * two BD entries.
+		 */
 struct buf_descriptor {
 	union {
 		uint32_t bd_fields;
@@ -77,10 +77,10 @@ struct buf_descriptor {
 } __packed;
 
 /*
- * Buffer Descriptor Table for the endpoints buffer management.
- * The driver configuration with 16 fully bidirectional endpoints would require
- * four BD entries per endpoint and 512 bytes of memory.
- */
+		 * Buffer Descriptor Table for the endpoints buffer management.
+		 * The driver configuration with 16 fully bidirectional endpoints would require
+		 * four BD entries per endpoint and 512 bytes of memory.
+		 */
 static struct buf_descriptor __aligned(512) bdt[(NUM_OF_EP_MAX) * 2 * 2];
 
 #define BD_IDX_EP0TX_EVEN		2
@@ -141,9 +141,9 @@ K_MSGQ_DEFINE(usb_dc_msgq, sizeof(struct cb_msg), 10, 4);
 static void usb_kinetis_isr_handler(void);
 
 /*
- * This function returns the BD element index based on
- * endpoint address and the odd bit.
- */
+		 * This function returns the BD element index based on
+		 * endpoint address and the odd bit.
+		 */
 static inline uint8_t get_bdt_idx(uint8_t ep, uint8_t odd)
 {
 	if (ep & USB_EP_DIR_IN) {
@@ -155,7 +155,7 @@ static inline uint8_t get_bdt_idx(uint8_t ep, uint8_t odd)
 static int kinetis_usb_init(void)
 {
 #if !DT_INST_PROP(0, no_voltage_regulator)
-	/* enable USB voltage regulator */
+		/* enable USB voltage regulator */
 	SIM->SOPT1 |= SIM_SOPT1_USBREGEN_MASK;
 #endif
 
@@ -163,7 +163,7 @@ static int kinetis_usb_init(void)
 	k_busy_wait(2000);
 
 	USB0->CTL = 0;
-	/* enable USB module, AKA USBEN bit in CTL1 register */
+		/* enable USB module, AKA USBEN bit in CTL1 register */
 	USB0->CTL |= USB_CTL_USBENSOFEN_MASK;
 
 	if ((USB0->PERID != USBFSOTG_PERID) ||
@@ -175,10 +175,10 @@ static int kinetis_usb_init(void)
 	USB0->BDTPAGE2 = (uint8_t)(((uint32_t)bdt) >> 16);
 	USB0->BDTPAGE3 = (uint8_t)(((uint32_t)bdt) >> 24);
 
-	/* clear interrupt flags */
+		/* clear interrupt flags */
 	USB0->ISTAT = 0xFF;
 
-	/* enable reset interrupt */
+		/* enable reset interrupt */
 	USB0->INTEN = USB_INTEN_USBRSTEN_MASK;
 
 	USB0->USBCTRL = USB_USBCTRL_PDE_MASK;
@@ -201,13 +201,13 @@ int usb_dc_reset(void)
 	USB0->CTL |= USB_CTL_ODDRST_MASK;
 	USB0->CTL &= ~USB_CTL_ODDRST_MASK;
 
-	/* Clear interrupt status flags */
+		/* Clear interrupt status flags */
 	USB0->ISTAT = 0xFF;
-	/* Clear error flags */
+		/* Clear error flags */
 	USB0->ERRSTAT = 0xFF;
-	/* Enable all error interrupt sources */
+		/* Enable all error interrupt sources */
 	USB0->ERREN = 0xFF;
-	/* Reset default address */
+		/* Reset default address */
 	USB0->ADDR = 0x00;
 
 	USB0->INTEN = (USB_INTEN_USBRSTEN_MASK |
@@ -230,16 +230,16 @@ int usb_dc_attach(void)
 
 	kinetis_usb_init();
 
-	/*
-	 * Call usb_dc_reset here because the device stack does not make it
-	 * after USB_DC_RESET status event.
-	 */
+		/*
+		 * Call usb_dc_reset here because the device stack does not make it
+		 * after USB_DC_RESET status event.
+		 */
 	usb_dc_reset();
 
 	dev_data.attached = 1;
 	LOG_DBG("attached");
 
-	/* non-OTG device mode, enable DP Pullup */
+		/* non-OTG device mode, enable DP Pullup */
 	USB0->CONTROL = USB_CONTROL_DPPULLUPNONOTG_MASK;
 
 	return 0;
@@ -248,7 +248,7 @@ int usb_dc_attach(void)
 int usb_dc_detach(void)
 {
 	LOG_DBG("");
-	/* disable USB and DP Pullup */
+		/* disable USB and DP Pullup */
 	USB0->CTL  &= ~USB_CTL_USBENSOFEN_MASK;
 	USB0->CONTROL &= ~USB_CONTROL_DPPULLUPNONOTG_MASK;
 
@@ -262,14 +262,14 @@ int usb_dc_set_address(const uint8_t addr)
 	if (!dev_data.attached) {
 		return -EINVAL;
 	}
-
-	/*
-	 * The device stack tries to set the address before
-	 * sending the ACK with ZLP, which is totally stupid,
-	 * as workaround the address will be buffered and
-	 * placed later inside isr handler (see KINETIS_IN_TOKEN).
-	 */
-	dev_data.address = 0x80 | (addr & 0x7f);
+		
+		/*
+		 * The device stack tries to set the address before
+		 * sending the ACK with ZLP, which is not ideal,
+		 * as workaround the address will be buffered and
+		 * placed later inside isr handler (see KINETIS_IN_TOKEN).
+		 */
+		dev_data.address = 0x80 | (addr & 0x7f);
 
 	return 0;
 }
@@ -473,7 +473,7 @@ int usb_dc_ep_clear_stall(const uint8_t ep)
 		bdt[bd_idx].set.bd_ctrl = 0U;
 	}
 
-	/* Resume TX token processing, see USBx_CTL field descriptions */
+		/* Resume TX token processing, see USBx_CTL field descriptions */
 	if (ep == 0U) {
 		USB0->CTL &= ~USB_CTL_TXSUSPENDTOKENBUSY_MASK;
 	}
@@ -653,7 +653,7 @@ int usb_dc_ep_write(const uint8_t ep, const uint8_t *const data,
 		bdt[bd_idx].set.bd_ctrl = BD_DTS_MASK | BD_OWN_MASK;
 	}
 
-	/* Toggle next Data1 */
+		/* Toggle next Data1 */
 	dev_data.ep_ctrl[ep_idx].status.in_data1 ^= 1;
 
 	LOG_DBG("ep 0x%x write %d bytes from %d", ep, len_to_send, data_len);
@@ -678,7 +678,7 @@ int usb_dc_ep_read_wait(uint8_t ep, uint8_t *data, uint32_t max_data_len,
 		return -EINVAL;
 	}
 
-	/* select the index of active endpoint buffer */
+		/* select the index of active endpoint buffer */
 	bd_idx = get_bdt_idx(ep, dev_data.ep_ctrl[ep_idx].status.out_odd);
 	bufp = (uint8_t *)bdt[bd_idx].buf_addr;
 
@@ -692,7 +692,7 @@ int usb_dc_ep_read_wait(uint8_t ep, uint8_t *data, uint32_t max_data_len,
 		return -EBUSY;
 	}
 
-	/* Allow to read 0 bytes */
+		/* Allow to read 0 bytes */
 	if (!data && max_data_len) {
 		LOG_ERR("Wrong arguments");
 		return -EINVAL;
@@ -761,13 +761,13 @@ int usb_dc_ep_read_continue(uint8_t ep)
 		return 0;
 	}
 
-	/* select the index of the next endpoint buffer */
+		/* select the index of the next endpoint buffer */
 	bd_idx = get_bdt_idx(ep, ~dev_data.ep_ctrl[ep_idx].status.out_odd);
-	/* Update next toggle bit */
+		/* Update next toggle bit */
 	dev_data.ep_ctrl[ep_idx].status.out_data1 ^= 1;
 	bdt[bd_idx].set.bc = dev_data.ep_ctrl[ep_idx].mps_out;
 
-	/* Reset next buffer descriptor and set next toggle bit  */
+		/* Reset next buffer descriptor and set next toggle bit  */
 	if (dev_data.ep_ctrl[ep_idx].status.out_data1) {
 		bdt[bd_idx].set.bd_ctrl = BD_DTS_MASK |
 					  BD_DATA01_MASK |
@@ -776,7 +776,7 @@ int usb_dc_ep_read_continue(uint8_t ep)
 		bdt[bd_idx].set.bd_ctrl = BD_DTS_MASK | BD_OWN_MASK;
 	}
 
-	/* Resume TX token processing, see USBx_CTL field descriptions */
+		/* Resume TX token processing, see USBx_CTL field descriptions */
 	if (ep_idx == 0U) {
 		USB0->CTL &= ~USB_CTL_TXSUSPENDTOKENBUSY_MASK;
 	}
@@ -861,7 +861,7 @@ static inline void reenable_control_endpoints(void)
 {
 	struct usb_dc_ep_cfg_data ep_cfg;
 
-	/* Reconfigure control endpoint 0 after a reset */
+		/* Reconfigure control endpoint 0 after a reset */
 	ep_cfg.ep_addr = USB_CONTROL_EP_OUT;
 	ep_cfg.ep_mps = USB_CONTROL_EP_MPS;
 	ep_cfg.ep_type = USB_DC_EP_CONTROL;
@@ -869,7 +869,7 @@ static inline void reenable_control_endpoints(void)
 	ep_cfg.ep_addr = USB_CONTROL_EP_IN;
 	usb_dc_ep_configure(&ep_cfg);
 
-	/* Enable both endpoint directions */
+		/* Enable both endpoint directions */
 	usb_dc_ep_enable(USB_CONTROL_EP_OUT);
 	usb_dc_ep_enable(USB_CONTROL_EP_IN);
 }
@@ -983,16 +983,16 @@ static void usb_kinetis_isr_handler(void)
 		k_msgq_put(&usb_dc_msgq, &msg, K_NO_WAIT);
 	}
 
-	/* Clear interrupt status bits */
+		/* Clear interrupt status bits */
 	USB0->ISTAT = istatus;
 }
 
 /*
- * This thread is only used to not run the USB device stack and endpoint
- * callbacks in the ISR context, which happens when an callback function
- * is called. TODO: something similar should be implemented in the USB
- * device stack so that it can be used by all drivers.
- */
+		 * This thread is only used to not run the USB device stack and endpoint
+		 * callbacks in the ISR context, which happens when an callback function
+		 * is called. TODO: something similar should be implemented in the USB
+		 * device stack so that it can be used by all drivers.
+		 */
 static void usb_kinetis_thread_main(void *arg1, void *unused1, void *unused2)
 {
 	ARG_UNUSED(arg1);

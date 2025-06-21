@@ -136,8 +136,8 @@ static int bq24190_charger_get_health(const struct device *dev, enum charger_hea
 			/*
 			 * This could be over-voltage or under-voltage
 			 * and there's no way to tell which.  Instead
-			 * of looking foolish and returning 'OVERVOLTAGE'
-			 * when its really under-voltage, just return
+ * of incorrectly returning 'OVERVOLTAGE'
+ * when it's really under-voltage, just return
 			 * 'UNSPEC_FAILURE'.
 			 */
 			*health = CHARGER_HEALTH_UNSPEC_FAILURE;

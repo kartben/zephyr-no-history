@@ -2282,8 +2282,8 @@ reexecute:
 		}
 
 		case s_chunk_parameters: {
-			__ASSERT_NO_MSG(parser->flags & F_CHUNKED);
-			/* just ignore this shit. TODO check for overflow */
+				__ASSERT_NO_MSG(parser->flags & F_CHUNKED);
+				/* just ignore this for now. TODO check for overflow */
 			if (ch == CR) {
 				UPDATE_STATE(s_chunk_size_almost_done);
 				break;

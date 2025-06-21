@@ -759,7 +759,7 @@ _excint_skip_ps_save_to_thread_\LVL:
 	 * at a fixed address in their own section, and don't (in our
 	 * current linker setup) have anywhere "definitely before
 	 * vectors" to place immediates.  Some platforms and apps will
-	 * link by dumb luck, others won't.  We add an extra jump just
+         * link by chance, others won't.  We add an extra jump just
 	 * to clear space we know to be legal.
 	 *
 	 * The right way to fix this would be to use a "literal_prefix"

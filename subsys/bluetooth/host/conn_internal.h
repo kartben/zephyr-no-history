@@ -337,7 +337,7 @@ struct bt_conn {
  * shall be called when the buffer is ACK'd by the controller (by a Num Complete
  * Packets event) or if the connection dies.
  *
- * Flow control in the spec be crazy, look it up. LL is allowed to choose
+ * Flow control in the spec is complicated, look it up. LL is allowed to choose
  * between sending NCP events always or not at all on disconnect.
  *
  * We pack the struct to make sure it fits in the net_buf user_data field.

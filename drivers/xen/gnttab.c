@@ -12,7 +12,7 @@
  *        Date: July 2006
  *
  * Environment: Xen Minimal OS
- * Description: Simple grant tables implementation. About as stupid as it's
+ * Description: Simple grant tables implementation. About as basic as it's
  *  possible to be and still work.
  *
  ****************************************************************************

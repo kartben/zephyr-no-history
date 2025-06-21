@@ -972,7 +972,7 @@ struct bt_conn *get_conn_ready(void)
 	return NULL;
 }
 
-/* Crazy that this file is compiled even if this is not true, but here we are. */
+/* Unexpected that this file is compiled even if this is not true, but here we are. */
 #if defined(CONFIG_BT_CONN)
 static void acl_get_and_clear_cb(struct bt_conn *conn, struct net_buf *buf,
 				 bt_conn_tx_cb_t *cb, void **ud)
