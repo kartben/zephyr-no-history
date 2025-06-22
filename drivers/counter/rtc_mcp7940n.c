@@ -277,10 +277,19 @@ static int write_data_block(const struct device *dev, enum mcp7940n_register add
 	}
 
 	if (addr == REG_RTC_SEC) {
+		if (size > RTC_TIME_REGISTERS_SIZE) {
+			return -EINVAL;
+		}
 		write_block_start = (uint8_t *)&data->registers;
 	} else if (addr == REG_ALM0_SEC) {
+		if (size > RTC_ALARM_REGISTERS_SIZE) {
+			return -EINVAL;
+		}
 		write_block_start = (uint8_t *)&data->alm0_registers;
 	} else if (addr == REG_ALM1_SEC) {
+		if (size > RTC_ALARM_REGISTERS_SIZE) {
+			return -EINVAL;
+		}
 		write_block_start = (uint8_t *)&data->alm1_registers;
 	} else {
 		return -EINVAL;
