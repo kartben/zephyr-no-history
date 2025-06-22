@@ -272,7 +272,12 @@ static uint16_t modem_cmux_transmit_frame(struct modem_cmux *cmux,
 	uint16_t data_len;
 	uint16_t buf_idx;
 
-	space = ring_buf_space_get(&cmux->transmit_rb) - MODEM_CMUX_FRAME_SIZE_MAX;
+	space = ring_buf_space_get(&cmux->transmit_rb);
+	if (space > MODEM_CMUX_FRAME_SIZE_MAX) {
+		space -= MODEM_CMUX_FRAME_SIZE_MAX;
+	} else {
+		space = 0U;
+	}
 	data_len = MIN(space, frame->data_len);
 	data_len = MIN(data_len, CONFIG_MODEM_CMUX_MTU);
 
