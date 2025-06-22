@@ -14,6 +14,7 @@
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/drivers/i2c.h>
 #include <zephyr/sys/byteorder.h>
+#include <zephyr/sys/util.h>
 #include <zephyr/logging/log.h>
 
 #include "apds9253.h"
@@ -131,12 +132,12 @@ static int apds9253_attr_set_gain(const struct device *dev, uint8_t gain)
 		return 0;
 	}
 
-	static uint8_t value_map[] = {
+	static const uint8_t value_map[] = {
 		APDS9253_LS_GAIN_RANGE_1, APDS9253_LS_GAIN_RANGE_3,  APDS9253_LS_GAIN_RANGE_6,
 		APDS9253_LS_GAIN_RANGE_9, APDS9253_LS_GAIN_RANGE_18,
 	};
 
-	if (gain < APDS9253_LS_GAIN_RANGE_1 || gain > APDS9253_LS_GAIN_RANGE_18) {
+	if (gain >= ARRAY_SIZE(value_map)) {
 		return -EINVAL;
 	}
 	value = value_map[gain];
