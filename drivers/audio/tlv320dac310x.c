@@ -443,9 +443,11 @@ static int codec_set_output_volume(const struct device *dev, int vol)
 	};
 
 	if ((vol > CODEC_OUTPUT_VOLUME_MAX) ||
-			(vol < CODEC_OUTPUT_VOLUME_MIN)) {
+	    (vol < CODEC_OUTPUT_VOLUME_MIN)) {
+		int vol_abs = abs(vol);
+
 		LOG_ERR("Invalid volume %d.%d dB",
-				vol >> 1, ((uint32_t)vol & 1) ? 5 : 0);
+			vol_abs >> 1, (vol_abs & 1) ? 5 : 0);
 		return -EINVAL;
 	}
 
