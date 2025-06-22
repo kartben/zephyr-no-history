@@ -326,8 +326,11 @@ static int codec_configure_clocks(const struct device *dev,
 			return -EINVAL;
 		}
 		LOG_DBG("I2S Master BCLKDIV: %u", bclk_div);
-		codec_write_reg(dev, BCLK_DIV_ADDR,
-				BCLK_DIV_POWER_UP | BCLK_DIV(bclk_div));
+	/*
+	* BCLK divider register will be written after the DAC and
+	* modulator clocks are configured. Writing it here would
+	* be redundant as the register is programmed again below.
+	*/
 	}
 
 	/* set NDAC, then MDAC, followed by OSR */
