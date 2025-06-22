@@ -41,6 +41,14 @@ LOG_MODULE_REGISTER(VEML6031, CONFIG_SENSOR_LOG_LEVEL);
 #define VEML6031_ALS_DATA_OVERFLOW 0xFFFF
 
 /*
+ * Maximum time to wait for data ready after triggering a measurement.
+ * The polling loop in veml6031_perform_single_measurement() waits in
+ * 1 ms steps until the data ready bit is set.  Abort after this many
+ * milliseconds to avoid an endless loop.
+ */
+#define VEML6031_MEAS_TIMEOUT_MS 1000
+
+/*
  * 16-bit command register addresses
  */
 #define VEML6031_CMDCODE_ALS_CONF_0 0x00
@@ -432,7 +440,7 @@ static int veml6031_perform_single_measurement(const struct device *dev)
 
 	veml6031_sleep_by_integration_time(data);
 
-	while (1) {
+	while (cnt < VEML6031_MEAS_TIMEOUT_MS) {
 		ret = veml6031_read(dev, VEML6031_CMDCODE_ALS_INT, &val);
 		if (ret) {
 			return ret;
@@ -445,6 +453,11 @@ static int veml6031_perform_single_measurement(const struct device *dev)
 		k_sleep(K_MSEC(1));
 
 		cnt++;
+	}
+
+	if (!(val & VEML6031_ALS_AF_DATA_READY)) {
+		LOG_ERR("Measurement timeout");
+		return -ETIMEDOUT;
 	}
 
 	LOG_DBG("read VEML6031_CMDCODE_ALS_INT: %02X (%d)", val, cnt);
